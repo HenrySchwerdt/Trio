@@ -1,0 +1,4970 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "%@ of %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ von %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ of %@"
+          }
+        }
+      }
+    },
+    "%@ units remaining at %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ Einheiten verbleibend um %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ units remaining at %@"
+          }
+        }
+      }
+    },
+    "%@U": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ IE"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@U"
+          }
+        }
+      }
+    },
+    "%d min remaining": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "noch %d Min."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d min remaining"
+          }
+        }
+      }
+    },
+    "%d%% • %d min remaining": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d %% • noch %d Min."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d%% • %d min remaining"
+          }
+        }
+      }
+    },
+    "A bolus is already in progress.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Es läuft bereits ein Bolus."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A bolus is already in progress."
+          }
+        }
+      }
+    },
+    "A bolus was cancelled. Only part of it may have been delivered.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Bolus wurde abgebrochen. Möglicherweise wurde nur ein Teil abgegeben."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A bolus was cancelled. Only part of it may have been delivered."
+          }
+        }
+      }
+    },
+    "A temporary basal rate on the pump has ended.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine temporäre Basalrate der Pumpe ist beendet."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A temporary basal rate on the pump has ended."
+          }
+        }
+      }
+    },
+    "Accu-Chek Insight": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accu-Chek Insight"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accu-Chek Insight"
+          }
+        }
+      }
+    },
+    "Accu-Chek Insight pump": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accu-Chek Insight Pumpe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accu-Chek Insight pump"
+          }
+        }
+      }
+    },
+    "An Android phone with InsightBridge": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Android-Handy mit InsightBridge"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An Android phone with InsightBridge"
+          }
+        }
+      }
+    },
+    "An earlier insulin command has an unknown result. Resolve it in the pump settings before dosing again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein früherer Insulinbefehl hat ein unbekanntes Ergebnis. Kläre das in den Pumpeneinstellungen, bevor wieder dosiert wird."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An earlier insulin command has an unknown result. Resolve it in the pump settings before dosing again."
+          }
+        }
+      }
+    },
+    "Apply your maximum bolus and basal limits": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maximalen Bolus und maximale Basalrate übernehmen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apply your maximum bolus and basal limits"
+          }
+        }
+      }
+    },
+    "Are you sure you want to stop using the Accu-Chek Insight? The pairing with the bridge is deleted.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Möchtest du die Accu-Chek Insight wirklich nicht mehr verwenden? Die Kopplung mit der Bridge wird gelöscht."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Are you sure you want to stop using the Accu-Chek Insight? The pairing with the bridge is deleted."
+          }
+        }
+      }
+    },
+    "Back": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zurück"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Back"
+          }
+        }
+      }
+    },
+    "Basal Not Confirmed": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basal unbestätigt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basal Not Confirmed"
+          }
+        }
+      }
+    },
+    "Basal profile": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basalprofil"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basal profile"
+          }
+        }
+      }
+    },
+    "Basal profile not confirmed": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basalprofil nicht bestätigt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basal profile not confirmed"
+          }
+        }
+      }
+    },
+    "Basal rate %.3f U/h is not a step the pump can deliver (0.01 U/h below 5 U/h, 0.1 U/h above).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Basalrate %.3f IE/h ist keine Stufe, die die Pumpe abgeben kann (0,01 IE/h unter 5 IE/h, darüber 0,1 IE/h)."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basal rate %.3f U/h is not a step the pump can deliver (0.01 U/h below 5 U/h, 0.1 U/h above)."
+          }
+        }
+      }
+    },
+    "Basal rate %.3f U/h is outside the range of the pump.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Basalrate %.3f IE/h liegt außerhalb des Bereichs der Pumpe."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basal rate %.3f U/h is outside the range of the pump."
+          }
+        }
+      }
+    },
+    "Basal rate changed": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basalrate geändert"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basal rate changed"
+          }
+        }
+      }
+    },
+    "Basal schedule: %d entries": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basalprofil: %d Einträge"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basal schedule: %d entries"
+          }
+        }
+      }
+    },
+    "Basal schedule: unchanged": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basalprofil: unverändert"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basal schedule: unchanged"
+          }
+        }
+      }
+    },
+    "Battery": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Batterie"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Battery"
+          }
+        }
+      }
+    },
+    "Battery level": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Batteriestand"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Battery level"
+          }
+        }
+      }
+    },
+    "Before you start": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bevor du beginnst"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Before you start"
+          }
+        }
+      }
+    },
+    "Bluetooth": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth"
+          }
+        }
+      }
+    },
+    "Bluetooth access is denied. Allow Bluetooth for Trio in Settings.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Bluetooth-Zugriff ist verweigert. Erlaube Bluetooth für Trio in den Einstellungen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth access is denied. Allow Bluetooth for Trio in Settings."
+          }
+        }
+      }
+    },
+    "Bluetooth is not supported on this device.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth wird auf diesem Gerät nicht unterstützt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth is not supported on this device."
+          }
+        }
+      }
+    },
+    "Bluetooth is on": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth ist eingeschaltet"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth is on"
+          }
+        }
+      }
+    },
+    "Bluetooth is turned off.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth ist ausgeschaltet."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth is turned off."
+          }
+        }
+      }
+    },
+    "Bluetooth must be on for both phones. Keep them close during setup.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth muss bei beiden Handys eingeschaltet sein. Halte sie bei der Einrichtung nah beieinander."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth must be on for both phones. Keep them close during setup."
+          }
+        }
+      }
+    },
+    "Bolus": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bolus"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bolus"
+          }
+        }
+      }
+    },
+    "Bolus (unreadable)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bolus (nicht lesbar)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bolus (unreadable)"
+          }
+        }
+      }
+    },
+    "Bolus cancelled": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bolus abgebrochen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bolus cancelled"
+          }
+        }
+      }
+    },
+    "Bolus differs from the request": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bolus weicht von der Anforderung ab"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bolus differs from the request"
+          }
+        }
+      }
+    },
+    "Bolus of %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bolus von %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bolus of %@"
+          }
+        }
+      }
+    },
+    "Bridge": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridge"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridge"
+          }
+        }
+      }
+    },
+    "Bridge ID": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridge-ID"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridge ID"
+          }
+        }
+      }
+    },
+    "Bridge cannot reach the pump": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridge erreicht die Pumpe nicht"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridge cannot reach the pump"
+          }
+        }
+      }
+    },
+    "Bridge connection": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridge-Verbindung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridge connection"
+          }
+        }
+      }
+    },
+    "Bridge has no pump paired": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridge hat keine Pumpe gekoppelt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridge has no pump paired"
+          }
+        }
+      }
+    },
+    "Bridge is connecting to the pump…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridge verbindet sich mit der Pumpe…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridge is connecting to the pump…"
+          }
+        }
+      }
+    },
+    "Bridge name": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridge-Name"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridge name"
+          }
+        }
+      }
+    },
+    "Bridge not found?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridge nicht gefunden?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridge not found?"
+          }
+        }
+      }
+    },
+    "Bridge version": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridge-Version"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridge version"
+          }
+        }
+      }
+    },
+    "Bridges found": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gefundene Bridges"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridges found"
+          }
+        }
+      }
+    },
+    "Cancel": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abbrechen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        }
+      }
+    },
+    "Cancel temp basal": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temporäre Basalrate abbrechen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel temp basal"
+          }
+        }
+      }
+    },
+    "Cannula filled": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kanüle befüllt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cannula filled"
+          }
+        }
+      }
+    },
+    "Cartridge inserted": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Patrone eingesetzt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cartridge inserted"
+          }
+        }
+      }
+    },
+    "Cartridge low": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Patrone fast leer"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cartridge low"
+          }
+        }
+      }
+    },
+    "Cartridge removed": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Patrone entfernt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cartridge removed"
+          }
+        }
+      }
+    },
+    "Check the connection": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbindung prüfen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check the connection"
+          }
+        }
+      }
+    },
+    "Check the pump": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpe prüfen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check the pump"
+          }
+        }
+      }
+    },
+    "Check the pump again": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpe erneut prüfen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check the pump again"
+          }
+        }
+      }
+    },
+    "Checked at": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geprüft um"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checked at"
+          }
+        }
+      }
+    },
+    "Close": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schließen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
+          }
+        }
+      }
+    },
+    "Code mismatch or cancelled": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Code stimmt nicht überein oder abgebrochen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Code mismatch or cancelled"
+          }
+        }
+      }
+    },
+    "Codes match": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Codes stimmen überein"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Codes match"
+          }
+        }
+      }
+    },
+    "Configuration": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konfiguration"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configuration"
+          }
+        }
+      }
+    },
+    "Confirm the alert on the pump or when Trio shows it as a notification.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestätige den Alarm an der Pumpe oder wenn Trio ihn als Mitteilung anzeigt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirm the alert on the pump or when Trio shows it as a notification."
+          }
+        }
+      }
+    },
+    "Confirm: delivered": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestätigen: abgegeben"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirm: delivered"
+          }
+        }
+      }
+    },
+    "Confirm: not delivered": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestätigen: nicht abgegeben"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirm: not delivered"
+          }
+        }
+      }
+    },
+    "Confirmed on pump": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An der Pumpe bestätigt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirmed on pump"
+          }
+        }
+      }
+    },
+    "Connected": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbunden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connected"
+          }
+        }
+      }
+    },
+    "Connecting to %@…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbinde mit %@…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connecting to %@…"
+          }
+        }
+      }
+    },
+    "Connecting…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbinde…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connecting…"
+          }
+        }
+      }
+    },
+    "Continue": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weiter"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue"
+          }
+        }
+      }
+    },
+    "Could not build the request (%@).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Anfrage konnte nicht erstellt werden (%@)."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not build the request (%@)."
+          }
+        }
+      }
+    },
+    "Could not read the answer of the InsightBridge app (%@).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Antwort der InsightBridge-App konnte nicht gelesen werden (%@)."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not read the answer of the InsightBridge app (%@)."
+          }
+        }
+      }
+    },
+    "Could not set the time": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeit konnte nicht gesetzt werden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not set the time"
+          }
+        }
+      }
+    },
+    "Could not sync the basal profile": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basalprofil konnte nicht synchronisiert werden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not sync the basal profile"
+          }
+        }
+      }
+    },
+    "Delete Pump": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpe löschen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete Pump"
+          }
+        }
+      }
+    },
+    "Delivery\nUncertain": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abgabe\nunsicher"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delivery\nUncertain"
+          }
+        }
+      }
+    },
+    "Delivery Uncertain": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abgabe unsicher"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delivery Uncertain"
+          }
+        }
+      }
+    },
+    "Delivery uncertain": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abgabe unsicher"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delivery uncertain"
+          }
+        }
+      }
+    },
+    "Done": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fertig"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
+          }
+        }
+      }
+    },
+    "Electronic error": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elektronikfehler"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Electronic error"
+          }
+        }
+      }
+    },
+    "Find the bridge": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridge finden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Find the bridge"
+          }
+        }
+      }
+    },
+    "Firmware": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Firmware"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Firmware"
+          }
+        }
+      }
+    },
+    "Firmware version": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Firmware-Version"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Firmware version"
+          }
+        }
+      }
+    },
+    "Get InsightBridge and read the instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "InsightBridge herunterladen und Anleitung lesen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Get InsightBridge and read the instructions"
+          }
+        }
+      }
+    },
+    "I'm ready": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ich bin bereit"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I'm ready"
+          }
+        }
+      }
+    },
+    "In InsightBridge tap \"Pair with iPhone\". The bridge only accepts pairing for two minutes.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippe in InsightBridge auf „Mit iPhone koppeln“. Die Bridge nimmt eine Kopplung nur zwei Minuten lang an."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In InsightBridge tap \"Pair with iPhone\". The bridge only accepts pairing for two minutes."
+          }
+        }
+      }
+    },
+    "Incompatible app version": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inkompatible App-Version"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Incompatible app version"
+          }
+        }
+      }
+    },
+    "InsightBridge help": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "InsightBridge-Hilfe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "InsightBridge help"
+          }
+        }
+      }
+    },
+    "InsightBridge instructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "InsightBridge-Anleitung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "InsightBridge instructions"
+          }
+        }
+      }
+    },
+    "InsightBridge must be running and connected to the pump.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "InsightBridge muss laufen und mit der Pumpe verbunden sein."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "InsightBridge must be running and connected to the pump."
+          }
+        }
+      }
+    },
+    "Install and open the InsightBridge app on an Android phone that stays near you.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installiere und öffne die InsightBridge-App auf einem Android-Handy, das in deiner Nähe bleibt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Install and open the InsightBridge app on an Android phone that stays near you."
+          }
+        }
+      }
+    },
+    "Insulin\nSuspended": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulin\npausiert"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulin\nSuspended"
+          }
+        }
+      }
+    },
+    "Insulin Delivery": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulinabgabe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulin Delivery"
+          }
+        }
+      }
+    },
+    "Insulin Remaining": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbleibendes Insulin"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulin Remaining"
+          }
+        }
+      }
+    },
+    "Insulin Suspended": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulin pausiert"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulin Suspended"
+          }
+        }
+      }
+    },
+    "Insulin Type": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulinart"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulin Type"
+          }
+        }
+      }
+    },
+    "Insulin delivery active": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulinabgabe aktiv"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulin delivery active"
+          }
+        }
+      }
+    },
+    "Insulin delivery uncertain": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulinabgabe unsicher"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulin delivery uncertain"
+          }
+        }
+      }
+    },
+    "Insulin in reservoir": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulin im Reservoir"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulin in reservoir"
+          }
+        }
+      }
+    },
+    "Insulin suspended": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulin pausiert"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulin suspended"
+          }
+        }
+      }
+    },
+    "Insulin type": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulinart"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulin type"
+          }
+        }
+      }
+    },
+    "Invalid data from the InsightBridge app (%@).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ungültige Daten von der InsightBridge-App (%@)."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invalid data from the InsightBridge app (%@)."
+          }
+        }
+      }
+    },
+    "Invalid temporary basal duration.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ungültige Dauer der temporären Basalrate."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invalid temporary basal duration."
+          }
+        }
+      }
+    },
+    "Invalid temporary basal rate.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ungültige temporäre Basalrate."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invalid temporary basal rate."
+          }
+        }
+      }
+    },
+    "Is Bluetooth turned on on both phones?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ist Bluetooth bei beiden Handys eingeschaltet?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Is Bluetooth turned on on both phones?"
+          }
+        }
+      }
+    },
+    "Is InsightBridge open and in range?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ist InsightBridge geöffnet und in Reichweite?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Is InsightBridge open and in range?"
+          }
+        }
+      }
+    },
+    "Is the InsightBridge app open on the Android phone? It only advertises while it is running.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ist die InsightBridge-App auf dem Android-Handy geöffnet? Sie ist nur sichtbar, solange sie läuft."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Is the InsightBridge app open on the Android phone? It only advertises while it is running."
+          }
+        }
+      }
+    },
+    "Is this the same code as in InsightBridge?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ist das derselbe Code wie in InsightBridge?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Is this the same code as in InsightBridge?"
+          }
+        }
+      }
+    },
+    "It was delivered": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Er wurde abgegeben"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It was delivered"
+          }
+        }
+      }
+    },
+    "It was not delivered": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Er wurde nicht abgegeben"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It was not delivered"
+          }
+        }
+      }
+    },
+    "Just now": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerade eben"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Just now"
+          }
+        }
+      }
+    },
+    "Keep the Android phone close to the pump and to this iPhone.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halte das Android-Handy nah bei der Pumpe und diesem iPhone."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep the Android phone close to the pump and to this iPhone."
+          }
+        }
+      }
+    },
+    "Last sync": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte Synchronisierung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last sync"
+          }
+        }
+      }
+    },
+    "Let Trio check": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trio prüfen lassen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Let Trio check"
+          }
+        }
+      }
+    },
+    "Make sure Trio is allowed to use Bluetooth in the iOS Settings.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stelle sicher, dass Trio in den iOS-Einstellungen Bluetooth verwenden darf."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Make sure Trio is allowed to use Bluetooth in the iOS Settings."
+          }
+        }
+      }
+    },
+    "Manage": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verwalten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manage"
+          }
+        }
+      }
+    },
+    "Manually sync Pump time": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpenzeit manuell synchronisieren"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manually sync Pump time"
+          }
+        }
+      }
+    },
+    "Mechanical error": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mechanischer Fehler"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mechanical error"
+          }
+        }
+      }
+    },
+    "Move the phones closer together.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bringe die Handys näher zusammen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move the phones closer together."
+          }
+        }
+      }
+    },
+    "Never": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Never"
+          }
+        }
+      }
+    },
+    "No Insulin": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Insulin"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Insulin"
+          }
+        }
+      }
+    },
+    "No Pump in Bridge": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Pumpe in der Bridge"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Pump in Bridge"
+          }
+        }
+      }
+    },
+    "No answer": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Antwort"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No answer"
+          }
+        }
+      }
+    },
+    "No basal schedule is known for the pump.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für die Pumpe ist kein Basalprofil bekannt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No basal schedule is known for the pump."
+          }
+        }
+      }
+    },
+    "No therapy settings were provided.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Es wurden keine Therapieeinstellungen übergeben."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No therapy settings were provided."
+          }
+        }
+      }
+    },
+    "No, keep pump as is": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nein, Pumpe unverändert lassen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No, keep pump as is"
+          }
+        }
+      }
+    },
+    "Not confirmed": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht bestätigt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not confirmed"
+          }
+        }
+      }
+    },
+    "Not connected": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht verbunden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not connected"
+          }
+        }
+      }
+    },
+    "Not connected to the InsightBridge app.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht mit der InsightBridge-App verbunden."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not connected to the InsightBridge app."
+          }
+        }
+      }
+    },
+    "Now confirm the code on the Android phone.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestätige jetzt den Code auf dem Android-Handy."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Now confirm the code on the Android phone."
+          }
+        }
+      }
+    },
+    "OK": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        }
+      }
+    },
+    "On the Android phone": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf dem Android-Handy"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On the Android phone"
+          }
+        }
+      }
+    },
+    "Only continue if both phones show exactly this code. If they differ, tap Cancel – somebody else may be trying to connect.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fahre nur fort, wenn beide Handys genau diesen Code anzeigen. Wenn sie sich unterscheiden, tippe auf Abbrechen – möglicherweise versucht jemand anderes, sich zu verbinden."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only continue if both phones show exactly this code. If they differ, tap Cancel – somebody else may be trying to connect."
+          }
+        }
+      }
+    },
+    "Only use these after checking the pump display and its history.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutze diese Optionen nur, nachdem du Display und Verlauf der Pumpe geprüft hast."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only use these after checking the pump display and its history."
+          }
+        }
+      }
+    },
+    "Open InsightBridge and pair your Insight pump there first.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffne InsightBridge und koppele zuerst dort deine Insight-Pumpe."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open InsightBridge and pair your Insight pump there first."
+          }
+        }
+      }
+    },
+    "Open InsightBridge on the Android phone, then tap your bridge below.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffne InsightBridge auf dem Android-Handy und tippe dann unten auf deine Bridge."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open InsightBridge on the Android phone, then tap your bridge below."
+          }
+        }
+      }
+    },
+    "Open InsightBridge on the Android phone.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffne InsightBridge auf dem Android-Handy."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open InsightBridge on the Android phone."
+          }
+        }
+      }
+    },
+    "Operating mode changed": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Betriebsmodus geändert"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Operating mode changed"
+          }
+        }
+      }
+    },
+    "Or decide yourself": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oder selbst entscheiden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Or decide yourself"
+          }
+        }
+      }
+    },
+    "Pair bridge again": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridge erneut koppeln"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pair bridge again"
+          }
+        }
+      }
+    },
+    "Pair the bridge again": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridge erneut koppeln"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pair the bridge again"
+          }
+        }
+      }
+    },
+    "Pair the bridge again?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bridge erneut koppeln?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pair the bridge again?"
+          }
+        }
+      }
+    },
+    "Pair with the bridge": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit der Bridge koppeln"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pair with the bridge"
+          }
+        }
+      }
+    },
+    "Pair your Insight pump in the InsightBridge app first. Trio only talks to the bridge.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Koppele deine Insight-Pumpe zuerst in der InsightBridge-App. Trio kommuniziert nur mit der Bridge."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pair your Insight pump in the InsightBridge app first. Trio only talks to the bridge."
+          }
+        }
+      }
+    },
+    "Paired with %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit %@ gekoppelt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paired with %@"
+          }
+        }
+      }
+    },
+    "Pairing was cancelled on one of the phones.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Kopplung wurde auf einem der Handys abgebrochen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pairing was cancelled on one of the phones."
+          }
+        }
+      }
+    },
+    "Pairing was cancelled.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Kopplung wurde abgebrochen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pairing was cancelled."
+          }
+        }
+      }
+    },
+    "Pairing…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopplung…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pairing…"
+          }
+        }
+      }
+    },
+    "Protocol version": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protokollversion"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protocol version"
+          }
+        }
+      }
+    },
+    "Pump": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pump"
+          }
+        }
+      }
+    },
+    "Pump Unreachable": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpe nicht erreichbar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pump Unreachable"
+          }
+        }
+      }
+    },
+    "Pump battery low": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpenbatterie schwach"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pump battery low"
+          }
+        }
+      }
+    },
+    "Pump clock is off by %d min": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Pumpenuhr geht um %d Min. falsch"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pump clock is off by %d min"
+          }
+        }
+      }
+    },
+    "Pump connected": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpe verbunden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pump connected"
+          }
+        }
+      }
+    },
+    "Pump error": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpenfehler"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pump error"
+          }
+        }
+      }
+    },
+    "Pump history unreadable": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpenverlauf nicht lesbar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pump history unreadable"
+          }
+        }
+      }
+    },
+    "Pump information": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpeninformationen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pump information"
+          }
+        }
+      }
+    },
+    "Pump is paused": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpe ist pausiert"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pump is paused"
+          }
+        }
+      }
+    },
+    "Pump last read": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpe zuletzt gelesen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pump last read"
+          }
+        }
+      }
+    },
+    "Pump maintenance request": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wartungsaufforderung der Pumpe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pump maintenance request"
+          }
+        }
+      }
+    },
+    "Pump not reachable": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpe nicht erreichbar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pump not reachable"
+          }
+        }
+      }
+    },
+    "Pump reminder": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erinnerung der Pumpe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pump reminder"
+          }
+        }
+      }
+    },
+    "Pump serial number": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seriennummer der Pumpe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pump serial number"
+          }
+        }
+      }
+    },
+    "Pump time": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpenzeit"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pump time"
+          }
+        }
+      }
+    },
+    "Pump time changed": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpenzeit geändert"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pump time changed"
+          }
+        }
+      }
+    },
+    "Pump time zone differs from this iPhone": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Zeitzone der Pumpe weicht von diesem iPhone ab"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pump time zone differs from this iPhone"
+          }
+        }
+      }
+    },
+    "Pump warning": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warnung der Pumpe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pump warning"
+          }
+        }
+      }
+    },
+    "Reading the pump through the bridge…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpe wird über die Bridge gelesen…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reading the pump through the bridge…"
+          }
+        }
+      }
+    },
+    "Remove Pump": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpe entfernen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove Pump"
+          }
+        }
+      }
+    },
+    "Resolve uncertain delivery": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unsichere Abgabe klären"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resolve uncertain delivery"
+          }
+        }
+      }
+    },
+    "Resume": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fortsetzen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resume"
+          }
+        }
+      }
+    },
+    "Resume Delivery": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abgabe fortsetzen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resume Delivery"
+          }
+        }
+      }
+    },
+    "Resume insulin": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulin fortsetzen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resume insulin"
+          }
+        }
+      }
+    },
+    "Resume insulin delivery?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulinabgabe fortsetzen?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resume insulin delivery?"
+          }
+        }
+      }
+    },
+    "Scanning": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suche läuft"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning"
+          }
+        }
+      }
+    },
+    "Scheduled Basal": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geplante Basalrate"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scheduled Basal"
+          }
+        }
+      }
+    },
+    "Searching for InsightBridge…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suche nach InsightBridge…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Searching for InsightBridge…"
+          }
+        }
+      }
+    },
+    "Securing connection…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbindung wird gesichert…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Securing connection…"
+          }
+        }
+      }
+    },
+    "Serial number": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seriennummer"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serial number"
+          }
+        }
+      }
+    },
+    "Set pump date, time and time zone": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datum, Uhrzeit und Zeitzone der Pumpe setzen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set pump date, time and time zone"
+          }
+        }
+      }
+    },
+    "Signal Loss": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signalverlust"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signal Loss"
+          }
+        }
+      }
+    },
+    "Simulated Pump": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simulierte Pumpe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simulated Pump"
+          }
+        }
+      }
+    },
+    "Simulated pump – no insulin is delivered": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simulierte Pumpe – es wird kein Insulin abgegeben"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simulated pump – no insulin is delivered"
+          }
+        }
+      }
+    },
+    "Start again; both phones must show the same code.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beginne von vorn; beide Handys müssen denselben Code anzeigen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start again; both phones must show the same code."
+          }
+        }
+      }
+    },
+    "Step %d of %d": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schritt %d von %d"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Step %d of %d"
+          }
+        }
+      }
+    },
+    "Stop Temp Basal": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temp. Basalrate stoppen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop Temp Basal"
+          }
+        }
+      }
+    },
+    "Suspend": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausieren"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suspend"
+          }
+        }
+      }
+    },
+    "Suspend Delivery": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abgabe pausieren"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suspend Delivery"
+          }
+        }
+      }
+    },
+    "Suspend insulin": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulin pausieren"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suspend insulin"
+          }
+        }
+      }
+    },
+    "Suspend insulin delivery?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insulinabgabe pausieren?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suspend insulin delivery?"
+          }
+        }
+      }
+    },
+    "Sync": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synchronisierung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sync"
+          }
+        }
+      }
+    },
+    "Sync and finish": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synchronisieren und abschließen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sync and finish"
+          }
+        }
+      }
+    },
+    "Sync basal profile": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basalprofil synchronisieren"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sync basal profile"
+          }
+        }
+      }
+    },
+    "Sync pump data": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpendaten synchronisieren"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sync pump data"
+          }
+        }
+      }
+    },
+    "Sync settings": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einstellungen synchronisieren"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sync settings"
+          }
+        }
+      }
+    },
+    "Syncing…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synchronisiere…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Syncing…"
+          }
+        }
+      }
+    },
+    "Tap \"Pair with iPhone\" and then try again within two minutes.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippe auf „Mit iPhone koppeln“ und versuche es innerhalb von zwei Minuten erneut."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap \"Pair with iPhone\" and then try again within two minutes."
+          }
+        }
+      }
+    },
+    "Tap \"Pair with iPhone\" in the bridge app, then try again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippe in der Bridge-App auf „Mit iPhone koppeln“ und versuche es erneut."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap \"Pair with iPhone\" in the bridge app, then try again."
+          }
+        }
+      }
+    },
+    "Temp Basal": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temporäre Basalrate"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temp Basal"
+          }
+        }
+      }
+    },
+    "Temp basal %d%%": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temporäre Basalrate %d %%"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temp basal %d%%"
+          }
+        }
+      }
+    },
+    "Temp basal differs from the request": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temporäre Basalrate weicht von der Anforderung ab"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temp basal differs from the request"
+          }
+        }
+      }
+    },
+    "Temp basal ended": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temporäre Basalrate beendet"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temp basal ended"
+          }
+        }
+      }
+    },
+    "Temp basal started": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temporäre Basalrate gestartet"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temp basal started"
+          }
+        }
+      }
+    },
+    "Temp basal started (%d%%)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temporäre Basalrate gestartet (%d %%)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temp basal started (%d%%)"
+          }
+        }
+      }
+    },
+    "Temporary basal ended": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temporäre Basalrate beendet"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temporary basal ended"
+          }
+        }
+      }
+    },
+    "The Insight changes basal only on full hours. Schedules with other start times are rejected.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Insight ändert die Basalrate nur zur vollen Stunde. Profile mit anderen Startzeiten werden abgelehnt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Insight changes basal only on full hours. Schedules with other start times are rejected."
+          }
+        }
+      }
+    },
+    "The Insight only supports basal schedules that change on full hours. Please adjust your basal schedule.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Insight unterstützt nur Basalprofile, die zur vollen Stunde wechseln. Bitte passe dein Basalprofil an."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Insight only supports basal schedules that change on full hours. Please adjust your basal schedule."
+          }
+        }
+      }
+    },
+    "The Insight pump cannot talk to an iPhone directly. Trio controls it through a small Android helper app called InsightBridge that stays connected to the pump.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Insight-Pumpe kann nicht direkt mit einem iPhone kommunizieren. Trio steuert sie über eine kleine Android-Hilfs-App namens InsightBridge, die mit der Pumpe verbunden bleibt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Insight pump cannot talk to an iPhone directly. Trio controls it through a small Android helper app called InsightBridge that stays connected to the pump."
+          }
+        }
+      }
+    },
+    "The Insight supports at most 24 basal entries (got %d).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Insight unterstützt höchstens 24 Basaleinträge (erhalten: %d)."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Insight supports at most 24 basal entries (got %d)."
+          }
+        }
+      }
+    },
+    "The InsightBridge app did not answer in time.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die InsightBridge-App hat nicht rechtzeitig geantwortet."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The InsightBridge app did not answer in time."
+          }
+        }
+      }
+    },
+    "The InsightBridge app does not know this iPhone. Pair the bridge again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die InsightBridge-App kennt dieses iPhone nicht. Koppele die Bridge erneut."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The InsightBridge app does not know this iPhone. Pair the bridge again."
+          }
+        }
+      }
+    },
+    "The InsightBridge app has no Insight pump paired. Pair the pump in the bridge app first.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In der InsightBridge-App ist keine Insight-Pumpe gekoppelt. Koppele die Pumpe zuerst in der Bridge-App."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The InsightBridge app has no Insight pump paired. Pair the pump in the bridge app first."
+          }
+        }
+      }
+    },
+    "The InsightBridge app uses an incompatible protocol version. Update both apps.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die InsightBridge-App verwendet eine inkompatible Protokollversion. Aktualisiere beide Apps."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The InsightBridge app uses an incompatible protocol version. Update both apps."
+          }
+        }
+      }
+    },
+    "The basal profile was written to the pump and verified.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Basalprofil wurde auf die Pumpe geschrieben und verifiziert."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The basal profile was written to the pump and verified."
+          }
+        }
+      }
+    },
+    "The basal schedule entries must be in ascending order.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Einträge des Basalprofils müssen aufsteigend sortiert sein."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The basal schedule entries must be in ascending order."
+          }
+        }
+      }
+    },
+    "The basal schedule is empty.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Basalprofil ist leer."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The basal schedule is empty."
+          }
+        }
+      }
+    },
+    "The basal schedule must start at midnight.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Basalprofil muss um Mitternacht beginnen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The basal schedule must start at midnight."
+          }
+        }
+      }
+    },
+    "The basal schedule on the pump is not confirmed. Sync the basal profile in the pump settings.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Basalprofil auf der Pumpe ist nicht bestätigt. Synchronisiere das Basalprofil in den Pumpeneinstellungen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The basal schedule on the pump is not confirmed. Sync the basal profile in the pump settings."
+          }
+        }
+      }
+    },
+    "The bolus amount must be greater than 0.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Bolusmenge muss größer als 0 sein."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The bolus amount must be greater than 0."
+          }
+        }
+      }
+    },
+    "The bolus cannot be cancelled yet.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Bolus kann noch nicht abgebrochen werden."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The bolus cannot be cancelled yet."
+          }
+        }
+      }
+    },
+    "The bolus exceeds the maximum of %.2f U.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Bolus überschreitet das Maximum von %.2f IE."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The bolus exceeds the maximum of %.2f U."
+          }
+        }
+      }
+    },
+    "The bolus is not a multiple of %.2f U.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Bolus ist kein Vielfaches von %.2f IE."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The bolus is not a multiple of %.2f U."
+          }
+        }
+      }
+    },
+    "The bolus is still being started and cannot be cancelled yet. Try again in a few seconds or suspend the pump.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Bolus wird noch gestartet und kann noch nicht abgebrochen werden. Versuche es in einigen Sekunden erneut oder pausiere die Pumpe."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The bolus is still being started and cannot be cancelled yet. Try again in a few seconds or suspend the pump."
+          }
+        }
+      }
+    },
+    "The bridge asked to be paired again. If this keeps happening, pair the bridge again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Bridge verlangt eine erneute Kopplung. Falls das wiederholt passiert, koppele die Bridge erneut."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The bridge asked to be paired again. If this keeps happening, pair the bridge again."
+          }
+        }
+      }
+    },
+    "The bridge cannot reach the pump.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Bridge erreicht die Pumpe nicht."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The bridge cannot reach the pump."
+          }
+        }
+      }
+    },
+    "The bridge could not be reached. Check the connection and try again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Bridge konnte nicht erreicht werden. Prüfe die Verbindung und versuche es erneut."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The bridge could not be reached. Check the connection and try again."
+          }
+        }
+      }
+    },
+    "The bridge could not be verified. Pair the bridge again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Bridge konnte nicht verifiziert werden. Koppele die Bridge erneut."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The bridge could not be verified. Pair the bridge again."
+          }
+        }
+      }
+    },
+    "The bridge has no pump": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Bridge hat keine Pumpe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The bridge has no pump"
+          }
+        }
+      }
+    },
+    "The bridge is in use by another phone.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Bridge wird von einem anderen Handy verwendet."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The bridge is in use by another phone."
+          }
+        }
+      }
+    },
+    "The bridge is not in pairing mode. Tap \"Pair with iPhone\" in the InsightBridge app and try again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Bridge ist nicht im Kopplungsmodus. Tippe in der InsightBridge-App auf „Mit iPhone koppeln“ und versuche es erneut."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The bridge is not in pairing mode. Tap \"Pair with iPhone\" in the InsightBridge app and try again."
+          }
+        }
+      }
+    },
+    "The bridge rejected the pairing data. Something may be interfering; try again close to the bridge.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Bridge hat die Kopplungsdaten abgelehnt. Möglicherweise stört etwas; versuche es erneut in der Nähe der Bridge."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The bridge rejected the pairing data. Something may be interfering; try again close to the bridge."
+          }
+        }
+      }
+    },
+    "The bridge reported an error.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Bridge hat einen Fehler gemeldet."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The bridge reported an error."
+          }
+        }
+      }
+    },
+    "The connection to the InsightBridge app was lost.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Verbindung zur InsightBridge-App wurde unterbrochen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The connection to the InsightBridge app was lost."
+          }
+        }
+      }
+    },
+    "The connection was interrupted while Trio was sending %@. Trio does not know whether the pump carried it out and will never send it again by itself.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Verbindung wurde unterbrochen, als Trio %@ gesendet hat. Trio weiß nicht, ob die Pumpe den Befehl ausgeführt hat, und sendet ihn niemals von selbst erneut."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The connection was interrupted while Trio was sending %@. Trio does not know whether the pump carried it out and will never send it again by itself."
+          }
+        }
+      }
+    },
+    "The insulin cartridge is running low. Prepare a new cartridge.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Insulinpatrone ist fast leer. Halte eine neue Patrone bereit."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The insulin cartridge is running low. Prepare a new cartridge."
+          }
+        }
+      }
+    },
+    "The pump asks for maintenance. Check the pump display.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Pumpe verlangt eine Wartung. Prüfe das Pumpendisplay."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The pump asks for maintenance. Check the pump display."
+          }
+        }
+      }
+    },
+    "The pump battery is low. Replace the battery soon.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Pumpenbatterie ist schwach. Wechsle die Batterie bald."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The pump battery is low. Replace the battery soon."
+          }
+        }
+      }
+    },
+    "The pump data is more than 15 minutes old. Insulin is not delivered until the pump has been read again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Pumpendaten sind älter als 15 Minuten. Es wird kein Insulin abgegeben, bis die Pumpe erneut gelesen wurde."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The pump data is more than 15 minutes old. Insulin is not delivered until the pump has been read again."
+          }
+        }
+      }
+    },
+    "The pump data is not conclusive yet. Try again in a minute or check the pump display.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Pumpendaten sind noch nicht eindeutig. Versuche es in einer Minute erneut oder prüfe das Pumpendisplay."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The pump data is not conclusive yet. Try again in a minute or check the pump display."
+          }
+        }
+      }
+    },
+    "The pump did not confirm the change.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Pumpe hat die Änderung nicht bestätigt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The pump did not confirm the change."
+          }
+        }
+      }
+    },
+    "The pump has not been set up.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Pumpe wurde nicht eingerichtet."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The pump has not been set up."
+          }
+        }
+      }
+    },
+    "The pump is already paired in InsightBridge": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Pumpe ist in InsightBridge bereits gekoppelt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The pump is already paired in InsightBridge"
+          }
+        }
+      }
+    },
+    "The pump is busy.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Pumpe ist beschäftigt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The pump is busy."
+          }
+        }
+      }
+    },
+    "The pump is paused and not delivering insulin. Resume delivery to continue.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Pumpe ist pausiert und gibt kein Insulin ab. Setze die Abgabe fort."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The pump is paused and not delivering insulin. Resume delivery to continue."
+          }
+        }
+      }
+    },
+    "The pump is suspended.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Pumpe ist pausiert."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The pump is suspended."
+          }
+        }
+      }
+    },
+    "The pump reported a mechanical error and stopped delivering insulin. Follow the instructions on the pump display.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Pumpe hat einen mechanischen Fehler gemeldet und die Insulinabgabe gestoppt. Folge den Anweisungen auf dem Pumpendisplay."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The pump reported a mechanical error and stopped delivering insulin. Follow the instructions on the pump display."
+          }
+        }
+      }
+    },
+    "The pump reported an electronic error and stopped delivering insulin. Follow the instructions on the pump display.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Pumpe hat einen Elektronikfehler gemeldet und die Insulinabgabe gestoppt. Folge den Anweisungen auf dem Pumpendisplay."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The pump reported an electronic error and stopped delivering insulin. Follow the instructions on the pump display."
+          }
+        }
+      }
+    },
+    "The pump reported an error and may have stopped delivering insulin. Check the pump display and follow its instructions.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Pumpe hat einen Fehler gemeldet und gibt möglicherweise kein Insulin mehr ab. Prüfe das Pumpendisplay und folge den Anweisungen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The pump reported an error and may have stopped delivering insulin. Check the pump display and follow its instructions."
+          }
+        }
+      }
+    },
+    "The pump reports %.2f U/h but Trio expects %.2f U/h. Temp basals are paused until the basal profile is synced in the pump settings.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Pumpe meldet %.2f IE/h, Trio erwartet aber %.2f IE/h. Temporäre Basalraten sind pausiert, bis das Basalprofil in den Pumpeneinstellungen synchronisiert wurde."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The pump reports %.2f U/h but Trio expects %.2f U/h. Temp basals are paused until the basal profile is synced in the pump settings."
+          }
+        }
+      }
+    },
+    "The pump runs %.2f U/h but Trio expects %.2f U/h. Sync the basal profile in the pump settings.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Pumpe läuft mit %.2f IE/h, Trio erwartet aber %.2f IE/h. Synchronisiere das Basalprofil in den Pumpeneinstellungen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The pump runs %.2f U/h but Trio expects %.2f U/h. Sync the basal profile in the pump settings."
+          }
+        }
+      }
+    },
+    "The pump shows a reminder.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Pumpe zeigt eine Erinnerung an."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The pump shows a reminder."
+          }
+        }
+      }
+    },
+    "The pump shows a warning. Check the pump display.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Pumpe zeigt eine Warnung an. Prüfe das Pumpendisplay."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The pump shows a warning. Check the pump display."
+          }
+        }
+      }
+    },
+    "The pump shows an alert that must be confirmed first.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Pumpe zeigt einen Alarm an, der zuerst bestätigt werden muss."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The pump shows an alert that must be confirmed first."
+          }
+        }
+      }
+    },
+    "The pump stops all insulin delivery, including basal, until you resume.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Pumpe stoppt jede Insulinabgabe, auch die Basalrate, bis du sie fortsetzt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The pump stops all insulin delivery, including basal, until you resume."
+          }
+        }
+      }
+    },
+    "The pump time was set.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Pumpenzeit wurde gesetzt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The pump time was set."
+          }
+        }
+      }
+    },
+    "The requested value exceeds a pump limit.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Wert überschreitet ein Limit der Pumpe."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The requested value exceeds a pump limit."
+          }
+        }
+      }
+    },
+    "The reservoir only holds %.1f U.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Reservoir enthält nur %.1f IE."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The reservoir only holds %.1f U."
+          }
+        }
+      }
+    },
+    "The scheduled basal rate is 0 U/h, a temporary basal cannot be expressed as a percentage.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die geplante Basalrate beträgt 0 IE/h, eine temporäre Basalrate lässt sich nicht als Prozentwert ausdrücken."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The scheduled basal rate is 0 U/h, a temporary basal cannot be expressed as a percentage."
+          }
+        }
+      }
+    },
+    "The time on your pump controls your scheduled basal. It will be set to the current time of this iPhone.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Zeit der Pumpe steuert deine geplante Basalrate. Sie wird auf die aktuelle Zeit dieses iPhones gesetzt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The time on your pump controls your scheduled basal. It will be set to the current time of this iPhone."
+          }
+        }
+      }
+    },
+    "The time on your pump is different from the current time. Your pump’s time controls your scheduled basal. Scroll down to the Pump time section to review the difference and configure your pump.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Zeit deiner Pumpe weicht von der aktuellen Zeit ab. Die Pumpenzeit steuert deine geplante Basalrate. Scrolle zum Abschnitt „Pumpenzeit“, um den Unterschied zu prüfen und die Pumpe einzustellen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The time on your pump is different from the current time. Your pump’s time controls your scheduled basal. Scroll down to the Pump time section to review the difference and configure your pump."
+          }
+        }
+      }
+    },
+    "Then come back and tap Try again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Komm dann zurück und tippe auf „Erneut versuchen“."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Then come back and tap Try again."
+          }
+        }
+      }
+    },
+    "This iPhone is not paired with an InsightBridge app.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieses iPhone ist mit keiner InsightBridge-App gekoppelt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This iPhone is not paired with an InsightBridge app."
+          }
+        }
+      }
+    },
+    "Time Change Detected": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeitänderung erkannt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Time Change Detected"
+          }
+        }
+      }
+    },
+    "Total daily dose": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tagesgesamtdosis"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total daily dose"
+          }
+        }
+      }
+    },
+    "Trio asked for a bolus of %.2f U but the pump reports %.2f U. The pump value is used.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trio hat einen Bolus von %.2f IE angefordert, die Pumpe meldet aber %.2f IE. Der Wert der Pumpe wird verwendet."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trio asked for a bolus of %.2f U but the pump reports %.2f U. The pump value is used."
+          }
+        }
+      }
+    },
+    "Trio asked for a temp basal of %d%% but the pump reports %d%%. The pump value is used.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trio hat eine temporäre Basalrate von %d %% angefordert, die Pumpe meldet aber %d %%. Der Wert der Pumpe wird verwendet."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trio asked for a temp basal of %d%% but the pump reports %d%%. The pump value is used."
+          }
+        }
+      }
+    },
+    "Trio compares the pump status and history with the command.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trio vergleicht Pumpenstatus und Verlauf mit dem Befehl."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trio compares the pump status and history with the command."
+          }
+        }
+      }
+    },
+    "Trio could not confirm the last command (%@). No further insulin is given until this is resolved.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trio konnte den letzten Befehl (%@) nicht bestätigen. Bis dies geklärt ist, wird kein weiteres Insulin abgegeben."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trio could not confirm the last command (%@). No further insulin is given until this is resolved."
+          }
+        }
+      }
+    },
+    "Trio could not read an entry of the pump history. Insulin that may have been delivered is counted. Check the pump history and update the InsightBridge app.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trio konnte einen Eintrag des Pumpenverlaufs nicht lesen. Möglicherweise abgegebenes Insulin wird mitgezählt. Prüfe den Pumpenverlauf und aktualisiere die InsightBridge-App."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trio could not read an entry of the pump history. Insulin that may have been delivered is counted. Check the pump history and update the InsightBridge app."
+          }
+        }
+      }
+    },
+    "Trio has not been able to talk to the InsightBridge app for a while. Check that the Android phone is on, the app is running and Bluetooth is enabled.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trio konnte seit einiger Zeit nicht mit der InsightBridge-App kommunizieren. Prüfe, ob das Android-Handy eingeschaltet, die App geöffnet und Bluetooth aktiv ist."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trio has not been able to talk to the InsightBridge app for a while. Check that the Android phone is on, the app is running and Bluetooth is enabled."
+          }
+        }
+      }
+    },
+    "Trio keeps counting a possibly delivered bolus as insulin on board, and gives no further insulin until this is resolved.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trio rechnet einen möglicherweise abgegebenen Bolus weiter als aktives Insulin und gibt bis zur Klärung kein weiteres Insulin ab."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trio keeps counting a possibly delivered bolus as insulin on board, and gives no further insulin until this is resolved."
+          }
+        }
+      }
+    },
+    "Trio now sets the pump clock and writes your basal schedule to the pump.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trio setzt jetzt die Pumpenuhr und schreibt dein Basalprofil auf die Pumpe."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trio now sets the pump clock and writes your basal schedule to the pump."
+          }
+        }
+      }
+    },
+    "Trio will count the command as carried out.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trio zählt den Befehl als ausgeführt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trio will count the command as carried out."
+          }
+        }
+      }
+    },
+    "Trio will forget this command. Make sure the pump did not deliver it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trio vergisst diesen Befehl. Stelle sicher, dass die Pumpe ihn nicht ausgeführt hat."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trio will forget this command. Make sure the pump did not deliver it."
+          }
+        }
+      }
+    },
+    "Try again": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erneut versuchen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try again"
+          }
+        }
+      }
+    },
+    "Tube filled": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlauch befüllt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tube filled"
+          }
+        }
+      }
+    },
+    "Turn Bluetooth on and allow Trio to use it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schalte Bluetooth ein und erlaube Trio die Nutzung."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn Bluetooth on and allow Trio to use it."
+          }
+        }
+      }
+    },
+    "U": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IE"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "U"
+          }
+        }
+      }
+    },
+    "U/hr": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IE/Std."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "U/hr"
+          }
+        }
+      }
+    },
+    "Uncertain delivery": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unsichere Abgabe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uncertain delivery"
+          }
+        }
+      }
+    },
+    "Unknown": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unbekannt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unknown"
+          }
+        }
+      }
+    },
+    "Use this if the connection was refused or you replaced the bridge phone. Your pump settings stay as they are.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutze dies, wenn die Verbindung abgelehnt wurde oder du das Bridge-Handy ersetzt hast. Deine Pumpeneinstellungen bleiben unverändert."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use this if the connection was refused or you replaced the bridge phone. Your pump settings stay as they are."
+          }
+        }
+      }
+    },
+    "Waiting for InsightBridge…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warte auf InsightBridge…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting for InsightBridge…"
+          }
+        }
+      }
+    },
+    "What to do": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was zu tun ist"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What to do"
+          }
+        }
+      }
+    },
+    "Write the basal profile to the pump?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basalprofil auf die Pumpe schreiben?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Write the basal profile to the pump?"
+          }
+        }
+      }
+    },
+    "Yes, sync to current time": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ja, auf aktuelle Zeit synchronisieren"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yes, sync to current time"
+          }
+        }
+      }
+    },
+    "Your current basal schedule is sent to the pump and read back to verify it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein aktuelles Basalprofil wird an die Pumpe gesendet und zur Kontrolle zurückgelesen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your current basal schedule is sent to the pump and read back to verify it."
+          }
+        }
+      }
+    },
+    "a bolus of %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "einen Bolus von %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "a bolus of %@"
+          }
+        }
+      }
+    },
+    "a temp basal of %d%%": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "eine temporäre Basalrate von %d %%"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "a temp basal of %d%%"
+          }
+        }
+      }
+    },
+    "cancelling the temp basal": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "den Abbruch der temporären Basalrate"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "cancelling the temp basal"
+          }
+        }
+      }
+    },
+    "resuming insulin delivery": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "das Fortsetzen der Insulinabgabe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "resuming insulin delivery"
+          }
+        }
+      }
+    },
+    "since %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "seit %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "since %@"
+          }
+        }
+      }
+    },
+    "suspending insulin delivery": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "das Pausieren der Insulinabgabe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "suspending insulin delivery"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

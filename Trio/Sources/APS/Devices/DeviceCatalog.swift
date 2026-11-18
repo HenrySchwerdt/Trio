@@ -8,6 +8,7 @@ import EversenseKit
 import Foundation
 import G7SensorKit
 import G7SensorKitUI
+import InsightKit
 import LibreLoop
 import LibreLoopUI
 import LibreTransmitter
@@ -454,6 +455,16 @@ extension DeviceCatalog {
             supportedModels: ["DanaRS", "Dana-i"],
             icon: .managerBundle(asset: "danars"),
             basalCapability: BasalRateCapability(supportedRates: DanaKitPumpManager.onboardingSupportedBasalRates),
+            reportsRewindEvents: true
+        ),
+        PumpCatalogEntry(
+            InsightPumpManager.self,
+            id: "Insight",
+            manufacturer: .roche,
+            name: "Accu-Chek Insight",
+            supportedModels: ["via InsightBridge"],
+            icon: .managerBundle(asset: "insight_pump"),
+            basalCapability: BasalRateCapability(supportedRates: InsightPumpManager.onboardingSupportedBasalRates),
             reportsRewindEvents: true
         ),
         PumpCatalogEntry(
