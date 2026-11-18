@@ -18,6 +18,7 @@ enum OSLogCapture {
         "Minimed500": ["com.loopkit.MinimedKit", "com.randallknutson.OmniBLE", "com.ps2.rileylink"],
         "Dana": ["com.randallknutson.DanaKit"],
         "Medtrum": ["org.nightscout.MedtrumKit"],
+        "Insight": ["org.nightscout.InsightKit"],
         "EversenseKit": ["org.nightscout.EversenseKit"],
         "AccuChek": ["com.bastiaanv.AccuChekKit"],
         "DexG5Transmitter": ["com.loopkit.CGMBLEKit"],

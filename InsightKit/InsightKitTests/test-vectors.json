@@ -1,0 +1,157 @@
+{
+  "protocolVersion": 2,
+  "description": "Fixed test vectors for the InsightBridge protocol (PROTOCOL.md). All keys are throw-away test values. Hex is lowercase, no separators. Base64 is standard with padding.",
+  "conventions": {
+    "hmac": "HMAC-SHA256",
+    "hkdf": "HKDF-SHA256 (RFC 5869): PRK = HMAC(salt, ikm); OKM = T(1)||T(2).. with T(n) = HMAC(PRK, T(n-1)||info||n)",
+    "ecdh": "P-256 (secp256r1); Z = 32-byte X coordinate of the shared point; public keys are X9.63 uncompressed (04||X||Y, 65 bytes)",
+    "strings": "all strings used as HKDF info / HMAC messages are ASCII bytes without terminator; nonces are concatenated as raw bytes",
+    "gcm": "AES-256-GCM, 96-bit nonce = direction(1) || 000000 || counter(uint64 BE), AAD = envelope bytes 0..8 (type + counter), tag 16 bytes appended to the ciphertext"
+  },
+  "hkdfSanity": {
+    "name": "RFC 5869 test case 1 (sanity check of the HKDF implementation)",
+    "ikm": "0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b",
+    "salt": "000102030405060708090a0b0c",
+    "info": "f0f1f2f3f4f5f6f7f8f9",
+    "length": 42,
+    "okm": "3cb25f25faacd57a90434f64d0362f2a2d2d0a90cf1a5a4c5db02d56ecc4c5bf34007208d5b887185865"
+  },
+  "pairing": {
+    "initiatorPrivateScalar": "101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f",
+    "initiatorPublicKey": "048e71ca9d7a62917be7f0db9896b47bf9b91c8b86628eed55d47fe750e65e5bcb75937f2ef48092880eaa8335c33f344c181e9de1797f239955a0bb2d56f84099",
+    "bridgePrivateScalar": "505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f",
+    "bridgePublicKey": "04b79e3d7dcfa3f11181f46f247af56c067b0ef53250fc18e9be82c23e6f833fee89247041637a86442f458b78a5c43960bbaccc3eb14c89e5ae9adaf4f7945530",
+    "nonceI": "a0a1a2a3a4a5a6a7a8a9aaabacadaeaf",
+    "nonceB": "b0b1b2b3b4b5b6b7b8b9babbbcbdbebf",
+    "sharedSecretZ": "a9d9643247cf29b153039a3e5a9e6a48919980cb0d4a6390cabb7cc4011ec6ce",
+    "ltkSalt": "a0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebf",
+    "ltkInfo": "InsightBridge LTK v1",
+    "ltk": "08ace41605c88bd168fc08e96b4f8c3ce915d4ed756d713e30f52c4b8033a7f2",
+    "sas": "462074",
+    "sasFormula": "uint32BE(HMAC-SHA256(LTK, \"SAS\")[0..3]) mod 1000000, zero padded to 6 digits",
+    "pairConfirmMac": "a661cfb69ac3669997e3c0064f5ddd450d49ccc449351beeeab43461f6633ea9",
+    "pairDoneMac": "2e0be16f10d98fe154814153d0f185bc376d2f094e47258b2e1c40f0683623a6",
+    "clientId": "0123456789abcdef",
+    "bridgeId": "fedcba9876543210",
+    "commitment": {
+      "input": "ASCII \"InsightBridge commit v2\" || pubI (65 raw bytes) || nonceI (16 raw bytes)",
+      "commit": "2ba5410ef04effda89f1cad6d5af4afaddef4ba4265d177e31374781403749be",
+      "wrongNonceI": "a1a2a3a4a5a6a7a8a9aaabacadaeafb0",
+      "commitWithWrongNonceI": "6a31d0f06cee63d4654d0e1df9cc6ae28d6e29e13d0e687736cedff850f64864",
+      "note": "bridge recomputes SHA-256 over the revealed pub/nonce and compares in constant time; mismatch -> pairReject commitMismatch"
+    },
+    "messages": {
+      "pairStart": "{\"t\":\"pairStart\",\"v\":2,\"commit\":\"K6VBDvBO/9qJ8crW1a9K+t3vS6QmXRd+MTdHgUA3Sb4=\"}",
+      "pairReveal": "{\"t\":\"pairReveal\",\"pub\":\"BI5xyp16YpF75/DbmJa0e/m5HIuGYo7tVdR/51DmXlvLdZN/LvSAkogOqoM1wz80TBgeneF5fyOZVaC7LVb4QJk=\",\"nonce\":\"oKGio6SlpqeoqaqrrK2urw==\"}",
+      "pairResp": "{\"t\":\"pairResp\",\"v\":2,\"pub\":\"BLeePX3Po/ERgfRvJHr1bAZ7DvUyUPwY6b6Cwj5vgz/uiSRwQWN6hkQvRYt4pcQ5YLuszD6xTInlrpra9PeUVTA=\",\"nonce\":\"sLGys7S1tre4ubq7vL2+vw==\",\"bridgeId\":\"fedcba9876543210\"}",
+      "pairConfirm": "{\"t\":\"pairConfirm\",\"mac\":\"pmHPtprDZpmX48AGT13dRQ1JzMRJNRvu6rQ0YfZjPqk=\"}",
+      "pairDone": "{\"t\":\"pairDone\",\"mac\":\"LgvhbxDZj+FUgUFT0PGFvDdtLwlORyWLLhxA8Gg2I6Y=\"}",
+      "note": "JSON field order is irrelevant; shown for the exact field names and base64 encoding. As envelopes these are sent as 0x01 || utf8-json."
+    }
+  },
+  "sasCases": [
+    {
+      "ltk": "08ace41605c88bd168fc08e96b4f8c3ce915d4ed756d713e30f52c4b8033a7f2",
+      "sas": "462074"
+    },
+    {
+      "ltk": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+      "sas": "669949"
+    },
+    {
+      "ltk": "05060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f2021222324",
+      "sas": "035756"
+    }
+  ],
+  "session": {
+    "ltk": "08ace41605c88bd168fc08e96b4f8c3ce915d4ed756d713e30f52c4b8033a7f2",
+    "clientId": "0123456789abcdef",
+    "bridgeId": "fedcba9876543210",
+    "nonceI": "c0c1c2c3c4c5c6c7c8c9cacbcccdcecf",
+    "nonceB": "d0d1d2d3d4d5d6d7d8d9dadbdcdddedf",
+    "macInput": "ASCII \"session\" || nonceI || nonceB",
+    "mac": "9d6f978bd90ef77e47d70a9d3c81de8fbdc463ed7187b5d79b4cb8469503a45e",
+    "sessionKeySalt": "c0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedf",
+    "sessionKeyInfo": "InsightBridge SK v1",
+    "sessionKey": "31449b9e868c7efdebc82d0af3d0810f1cb795f55c6dede9483ddc5e2d9401e1",
+    "messages": {
+      "sessionStart": "{\"t\":\"sessionStart\",\"v\":2,\"clientId\":\"0123456789abcdef\",\"nonce\":\"wMHCw8TFxsfIycrLzM3Ozw==\"}",
+      "sessionResp": "{\"t\":\"sessionResp\",\"v\":2,\"bridgeId\":\"fedcba9876543210\",\"nonce\":\"0NHS09TV1tfY2drb3N3e3w==\",\"mac\":\"nW+Xi9kO935H1wqdPIHej73EY+1xh7XXm0y4RpUDpF4=\"}"
+    }
+  },
+  "envelopes": [
+    {
+      "name": "hello request (iPhone -> bridge, first message)",
+      "direction": "iphoneToBridge",
+      "directionByte": 1,
+      "key": "31449b9e868c7efdebc82d0af3d0810f1cb795f55c6dede9483ddc5e2d9401e1",
+      "counter": 1,
+      "plaintextUtf8": "{\"id\":1,\"op\":\"hello\",\"args\":{\"protocol\":2,\"app\":\"Trio 1.0\"}}",
+      "plaintextHex": "7b226964223a312c226f70223a2268656c6c6f222c2261726773223a7b2270726f746f636f6c223a322c22617070223a225472696f20312e30227d7d",
+      "nonce": "010000000000000000000001",
+      "aad": "020000000000000001",
+      "ciphertextAndTag": "aa3f9547c3b7510aabcdd32caccff0101029df1cfa9bce473bb2523883486054422f4ba930960c0dc1eb1df02dca0e2f7ee10ab45a2bf0a666eb64a95f17e5e1ff2d0ee84ee84aef39590135",
+      "envelope": "020000000000000001aa3f9547c3b7510aabcdd32caccff0101029df1cfa9bce473bb2523883486054422f4ba930960c0dc1eb1df02dca0e2f7ee10ab45a2bf0a666eb64a95f17e5e1ff2d0ee84ee84aef39590135"
+    },
+    {
+      "name": "hello response (bridge -> iPhone, first message)",
+      "direction": "bridgeToIphone",
+      "directionByte": 2,
+      "key": "31449b9e868c7efdebc82d0af3d0810f1cb795f55c6dede9483ddc5e2d9401e1",
+      "counter": 1,
+      "plaintextUtf8": "{\"id\":1,\"ok\":true,\"result\":{\"protocol\":2,\"bridgeVersion\":\"1.0.0\",\"pumpPaired\":true}}",
+      "plaintextHex": "7b226964223a312c226f6b223a747275652c22726573756c74223a7b2270726f746f636f6c223a322c2262726964676556657273696f6e223a22312e302e30222c2270756d70506169726564223a747275657d7d",
+      "nonce": "020000000000000000000001",
+      "aad": "020000000000000001",
+      "ciphertextAndTag": "e91968aaca5423aaabb40704a5e164372adf4530c901b8975da55cba80ea9444ee679e747213c63caf2e8195f38d3c0bfb0a6ad730cd0f754501422a285a17a55ba39c27f4a06e3ed1034f4a061a1996e1b404aaccfba299e639d973fadb3d066e362945",
+      "envelope": "020000000000000001e91968aaca5423aaabb40704a5e164372adf4530c901b8975da55cba80ea9444ee679e747213c63caf2e8195f38d3c0bfb0a6ad730cd0f754501422a285a17a55ba39c27f4a06e3ed1034f4a061a1996e1b404aaccfba299e639d973fadb3d066e362945"
+    },
+    {
+      "name": "getStatus request, counter 2",
+      "direction": "iphoneToBridge",
+      "directionByte": 1,
+      "key": "31449b9e868c7efdebc82d0af3d0810f1cb795f55c6dede9483ddc5e2d9401e1",
+      "counter": 2,
+      "plaintextUtf8": "{\"id\":2,\"op\":\"getStatus\"}",
+      "plaintextHex": "7b226964223a322c226f70223a22676574537461747573227d",
+      "nonce": "010000000000000000000002",
+      "aad": "020000000000000002",
+      "ciphertextAndTag": "08c71b3ce2dd834959e5a7b1758b8bb9a16b231c895c66a129f4066d35f86d16883d30b5d39bd3a3fa",
+      "envelope": "02000000000000000208c71b3ce2dd834959e5a7b1758b8bb9a16b231c895c66a129f4066d35f86d16883d30b5d39bd3a3fa"
+    },
+    {
+      "name": "error response, counter 300 (multi-byte counter)",
+      "direction": "bridgeToIphone",
+      "directionByte": 2,
+      "key": "31449b9e868c7efdebc82d0af3d0810f1cb795f55c6dede9483ddc5e2d9401e1",
+      "counter": 300,
+      "plaintextUtf8": "{\"id\":9,\"ok\":false,\"error\":{\"code\":\"invalidArgs\",\"message\":\"amount must be a multiple of 0.05 U\",\"uncertain\":false}}",
+      "plaintextHex": "7b226964223a392c226f6b223a66616c73652c226572726f72223a7b22636f6465223a22696e76616c696441726773222c226d657373616765223a22616d6f756e74206d7573742062652061206d756c7469706c65206f6620302e30352055222c22756e6365727461696e223a66616c73657d7d",
+      "nonce": "02000000000000000000012c",
+      "aad": "02000000000000012c",
+      "ciphertextAndTag": "30d48770eb49050176dec9f40b2dc1f5e2e591418fc193606941e3d2bd3b331939975c13b09ed52706cba3ef350f9c88eb61ff179a38b3966328781b3aaaf20894fd4cf67049247b6d48b4c04341695682da31862e656a333585e4104d634f8daddfa9b0355caff13eeafd6ad4e0b70e6f0d7e9534b3b48fb08985f249c643cd45e39f99",
+      "envelope": "02000000000000012c30d48770eb49050176dec9f40b2dc1f5e2e591418fc193606941e3d2bd3b331939975c13b09ed52706cba3ef350f9c88eb61ff179a38b3966328781b3aaaf20894fd4cf67049247b6d48b4c04341695682da31862e656a333585e4104d634f8daddfa9b0355caff13eeafd6ad4e0b70e6f0d7e9534b3b48fb08985f249c643cd45e39f99"
+    }
+  ],
+  "fragmentation": {
+    "maxFragmentSize": 20,
+    "note": "maxFragmentSize is the ATT value size (MTU 23 - 3 = 20) including the 3-byte fragment header",
+    "messageSeq": 258,
+    "message": "020000000000000001aa3f9547c3b7510aabcdd32caccff0101029df1cfa9bce473bb2523883486054422f4ba930960c0dc1eb1df02dca0e2f7ee10ab45a2bf0a666eb64a95f17e5e1ff2d0ee84ee84aef39590135",
+    "fragments": [
+      "010102020000000000000001aa3f9547c3b7510a",
+      "000102abcdd32caccff0101029df1cfa9bce473b",
+      "000102b2523883486054422f4ba930960c0dc1eb",
+      "0001021df02dca0e2f7ee10ab45a2bf0a666eb64",
+      "020102a95f17e5e1ff2d0ee84ee84aef39590135"
+    ]
+  },
+  "fragmentationSingle": {
+    "maxFragmentSize": 20,
+    "messageSeq": 7,
+    "message": "010203",
+    "fragments": [
+      "030007010203"
+    ]
+  }
+}

@@ -2,6 +2,7 @@ import Combine
 import CoreData
 import DanaKit
 import Foundation
+import InsightKit
 import LoopKit
 import LoopKitUI
 import MedtrumKit
@@ -711,6 +712,8 @@ extension PumpManager {
             return dana.state.pumpTime == nil ? nil : Decimal(dana.state.reservoirLevel)
         case let minimed as MinimedPumpManager:
             return minimed.state.lastReservoirReading.map { Decimal($0.units) }
+        case let insight as InsightPumpManager:
+            return insight.state.reservoirUnits.map { Decimal($0) }
         case let mock as MockPumpManager:
             return Decimal(mock.state.reservoirUnitsRemaining)
         default:
