@@ -98,7 +98,8 @@ jobs:
       - name: Sync upstream changes
         if: | # do not run the upstream sync action on the upstream repository
           steps.workflow-permission.outputs.has_permission == 'true' &&
-          vars.SCHEDULED_SYNC != 'false' && github.repository_owner != 'nightscout'
+          vars.SCHEDULED_SYNC != 'false' && github.repository_owner != 'nightscout' &&
+          github.ref_name != 'ci/local-runner'
         id: sync
         uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.2
         with:
@@ -189,7 +190,7 @@ jobs:
   build:
     name: Build
     needs: [check_certs, check_status]
-    runs-on: macos-26
+    runs-on: [self-hosted, trio-local]
     permissions:
       contents: write
     if:
@@ -199,6 +200,7 @@ jobs:
         (vars.SCHEDULED_SYNC != 'false' && needs.check_status.outputs.NEW_COMMITS == 'true' )
     steps:
       - name: Select Xcode version
+        if: runner.environment == 'github-hosted'
         run: "sudo xcode-select --switch /Applications/Xcode_26.5.app/Contents/Developer"
       
       - name: Checkout Repo for building
@@ -269,6 +271,7 @@ jobs:
 
       # Sync the GitHub runner clock with the Windows time server (workaround as suggested in https://github.com/actions/runner/issues/2996)
       - name: Sync clock
+        if: runner.environment == 'github-hosted'
         run: sudo sntp -sS time.windows.com
 
       # Build signed Trio IPA file
