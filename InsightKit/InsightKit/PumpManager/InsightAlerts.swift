@@ -178,6 +178,8 @@ public enum InsightAlertCatalog {
     public static let basalMismatchAlertIdentifier = "insight.basal-mismatch"
     public static let disconnectedAlertIdentifier = "insight.bridge-disconnected"
     public static let uncertainAlertIdentifier = "insight.delivery-uncertain"
+    public static let profileSimplifiedAlertIdentifier = "insight.profile-simplified"
+    public static let loopBlockedAlertIdentifier = "insight.loop-blocked"
 
     public static func bridgeDisconnectedAlert() -> Alert {
         let content = Alert.Content(
@@ -201,6 +203,28 @@ public enum InsightAlertCatalog {
         return Alert(
             identifier: Alert.Identifier(managerIdentifier: managerIdentifier, alertIdentifier: identifier),
             foregroundContent: content, backgroundContent: content, trigger: .immediate, interruptionLevel: level
+        )
+    }
+
+    public static func profileSimplifiedAlert() -> Alert {
+        simpleAlert(
+            profileSimplifiedAlertIdentifier,
+            title: LocalizedString("Pump basal profile simplified", comment: "Alert title"),
+            body: LocalizedString(
+                "The Accu-Chek Insight can only store basal rates that change on full hours. Trio converted your basal profile: each hour uses the lowest rate scheduled in that hour. Temp basals still deliver the rates Trio asks for.",
+                comment: "Alert body"
+            ),
+            level: .active
+        )
+    }
+
+    /// Insulin was refused (loop cycle, SMB, bolus): says why, so it never fails silently.
+    public static func loopBlockedAlert(reason: String) -> Alert {
+        simpleAlert(
+            loopBlockedAlertIdentifier,
+            title: LocalizedString("Trio cannot dose with the Insight", comment: "Alert title"),
+            body: reason,
+            level: .timeSensitive
         )
     }
 

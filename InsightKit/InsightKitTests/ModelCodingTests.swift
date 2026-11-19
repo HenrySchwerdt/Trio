@@ -49,7 +49,7 @@ final class ModelCodingTests: XCTestCase {
 
     func testEveryOpHasTimeoutClass() {
         for op in BridgeOp.allCases {
-            XCTAssertEqual(op.timeout, op.isDosing ? 45 : 30, "\(op)")
+            XCTAssertEqual(op.timeout, op == .ping ? 10 : (op.isDosing ? 45 : 30), "\(op)")
         }
         XCTAssertTrue(BridgeOp.deliverBolus.isDosing)
         XCTAssertTrue(BridgeOp.setTBR.isDosing)

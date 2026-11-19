@@ -73,6 +73,15 @@ extension InsightPumpManager: PumpManagerUI {
                 imageName: "exclamationmark.circle.fill", state: .critical
             )
         }
+        if s.loopBlockedReason != nil {
+            return PumpStatusHighlight(
+                localizedMessage: LocalizedString(
+                    "Dosing Blocked",
+                    comment: "Status highlight when Trio's last insulin command was refused"
+                ),
+                imageName: "exclamationmark.circle.fill", state: .critical
+            )
+        }
         if let alert = s.activePumpAlert, !alert.isSnoozed {
             let info = InsightAlertCatalog.info(for: alert)
             if info.severity == .error {
@@ -109,6 +118,25 @@ extension InsightPumpManager: PumpManagerUI {
                 ),
                 imageName: "pause.circle.fill", state: .warning
             )
+        }
+        switch linkStatus {
+        case .bridgeNotFound:
+            return PumpStatusHighlight(
+                localizedMessage: LocalizedString(
+                    "Bridge Not Found",
+                    comment: "Status highlight when the bridge is not in range"
+                ),
+                imageName: "exclamationmark.circle.fill", state: .warning
+            )
+        case let .reconnecting(since) where clock().timeIntervalSince(since) > 120:
+            return PumpStatusHighlight(
+                localizedMessage: LocalizedString(
+                    "Bridge Reconnecting",
+                    comment: "Status highlight while the bridge link is down"
+                ),
+                imageName: "exclamationmark.triangle.fill", state: .warning
+            )
+        default: break
         }
         if inSignalLoss {
             return PumpStatusHighlight(

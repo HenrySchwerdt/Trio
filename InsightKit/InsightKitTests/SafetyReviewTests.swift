@@ -1309,9 +1309,10 @@ final class LowFindingsTests: XCTestCase {
 
     func testDosingIsRefusedWhenThePumpIsNotConnectedToTheBridge() {
         for link in [PumpLinkState.disconnected, .connecting, .unknown] {
-            let h = ManagerHarness()
+            let h = ManagerHarness { $0.lastPumpReadDate = Date() }
+            // read long before this request: a cached "pump not connected" is believed
             h.client.status = BridgeStatus(
-                timestamp: h.now.addingTimeInterval(5),
+                timestamp: h.now.addingTimeInterval(-300),
                 pumpLink: link,
                 serial: "SN1",
                 basal: .init(activeProfile: 1, rate: 1.0)
@@ -1326,10 +1327,52 @@ final class LowFindingsTests: XCTestCase {
         }
     }
 
+    func testOnDemandBridgeStatusReadForTheRequestCountsAsConnected() {
+        // On-demand bridge: it connects to the pump for our getStatus and reports the link as down afterwards.
+        for link in [PumpLinkState.disconnected, .connecting, .unknown] {
+            let h = ManagerHarness { $0.lastPumpReadDate = Date().addingTimeInterval(-10) }
+            h.client.status = BridgeStatus(
+                timestamp: h.now.addingTimeInterval(1), pumpLink: link, serial: "SN1", basal: .init(activeProfile: 1, rate: 1.0)
+            )
+            XCTAssertNil(h.bolus(1.0), "\(link)")
+            XCTAssertEqual(h.client.deliverBolusCalls.count, 1)
+            // every command makes the bridge read the pump again: a newer read time each time
+            h.client.status = BridgeStatus(
+                timestamp: h.now.addingTimeInterval(2), pumpLink: link, serial: "SN1", basal: .init(activeProfile: 1, rate: 1.0)
+            )
+            XCTAssertNil(h.tbr(1.5), "\(link)")
+        }
+    }
+
+    func testOnDemandCachedStatusDoesNotShortcutPreflight() {
+        let h = ManagerHarness { $0.lastPumpReadDate = Date().addingTimeInterval(-10) }
+        h.client.status = BridgeStatus(
+            timestamp: h.now.addingTimeInterval(1), pumpLink: .disconnected, serial: "SN1",
+            basal: .init(activeProfile: 1, rate: 1.0)
+        )
+        h.ensureData()
+        let before = h.client.statusCalls
+        h.client.status = BridgeStatus(
+            timestamp: h.now.addingTimeInterval(2), pumpLink: .disconnected, serial: "SN1",
+            basal: .init(activeProfile: 1, rate: 1.0)
+        )
+        XCTAssertNil(h.tbr(1.5))
+        XCTAssertGreaterThan(h.client.statusCalls, before, "a status that says 'not connected' is never trusted from the cache")
+    }
+
+    func testOnDemandStatusThatIsNotNewerThanTheKnownReadIsRefused() {
+        // The bridge answers with the cached read it already gave us (no pump contact for this request).
+        let h = ManagerHarness { $0.lastPumpReadDate = Date().addingTimeInterval(-10) }
+        h.client.status = BridgeStatus(timestamp: h.now.addingTimeInterval(1), pumpLink: .disconnected, serial: "SN1")
+        h.ensureData()
+        guard case .connection? = h.bolus(1.0) else { return XCTFail("same read time: not read for this request") }
+        XCTAssertTrue(h.client.deliverBolusCalls.isEmpty)
+    }
+
     func testDosingIsRefusedWithFreshStatusShortcutAndDisconnectedPump() {
         let h = ManagerHarness()
-        h.client.status = BridgeStatus(timestamp: h.now.addingTimeInterval(5), pumpLink: .disconnected, serial: "SN1")
-        h.ensureData() // loads the (disconnected) status, which is now "fresh"
+        h.client.status = BridgeStatus(timestamp: h.now.addingTimeInterval(-120), pumpLink: .disconnected, serial: "SN1")
+        h.ensureData() // loads the (disconnected) status
         guard case .connection? = h.bolus(1.0) else { return XCTFail() }
         XCTAssertTrue(h.client.deliverBolusCalls.isEmpty)
         // the pump comes back
