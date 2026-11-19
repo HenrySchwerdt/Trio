@@ -104,9 +104,9 @@ public extension InsightPumpManager {
     ) {
         queue.async {
             let s = self.state
-            let schedule: InsightBasalSchedule
+            let converted: InsightBasalSchedule.Simplified
             do {
-                schedule = try InsightBasalSchedule.validated(
+                converted = try InsightBasalSchedule.simplified(
                     items: basalItems,
                     minRate: s.limits.minBasal ?? InsightPumpSpec.minBasal,
                     maxRate: min(s.limits.maxBasal ?? InsightPumpSpec.maxBasalAbsolute, InsightPumpSpec.maxBasalAbsolute)
@@ -125,9 +125,10 @@ public extension InsightPumpManager {
                     DispatchQueue.main.async { completion(.failure(error)) }
                     return
                 }
-                self.pushBasalSchedule(schedule) { result in
+                self.pushBasalSchedule(converted.schedule) { result in
                     switch result {
                     case .success:
+                        self.noteProfileConversion(converted)
                         self.queue.async {
                             self.mutate { $0.isOnboarded = true }
                             self.notifyStateDidChange()
@@ -156,11 +157,12 @@ public extension InsightPumpManager {
         }
     }
 
-    func refreshNow(completion: (() -> Void)? = nil) {
+    /// "Sync pump data": reads status and history. The result says whether the bridge could be reached.
+    func refreshNow(completion: ((Result<Void, BridgeError>) -> Void)? = nil) {
         queue.async {
             self.client.ensureStarted()
-            self.refreshAll(reason: "user") { _ in
-                DispatchQueue.main.async { completion?() }
+            self.refreshAll(reason: "user") { result in
+                DispatchQueue.main.async { completion?(result) }
             }
         }
     }

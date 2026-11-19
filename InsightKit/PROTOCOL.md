@@ -36,9 +36,43 @@ Division of responsibility:
   **not** rename the phone's Bluetooth adapter, so there is no `InsightBridge-…` local name; centrals
   must identify bridges by service UUID (and, after pairing, by the `bridgeId`) and must not filter
   by name. Display name: `InsightBridge-` + service data.
+- **Always advertising.** The bridge advertises (connectable) at all times, also while a central is
+  connected, so a central whose link silently died can always find it again.
+- **Address rotation.** Android rotates its BLE address (resolvable private address) roughly every
+  15 minutes and on Bluetooth restarts. Centrals therefore **must not** rely on a remembered
+  peripheral identifier alone. Reconnect strategy (§1a) is mandatory.
 - iOS requests the highest MTU; both sides must work with ATT MTU 23 (payload 20).
 - The bridge accepts **one** bonded central at a time. A second central is rejected with
   `error.busy` once the frame layer is up.
+
+## 1a. Connection supervision and self-recovery (both sides MUST implement)
+
+Central (iPhone), whenever a connection is wanted and no authenticated session is up:
+1. Keep a pending `connect` to the last known peripheral identifier (cheap, survives in background).
+2. **At the same time** scan for the service UUID. Every discovered bridge candidate that is not on
+   the ignore list is connected and a session handshake (§4.2) is attempted. The first candidate
+   that completes the handshake with the paired `bridgeId` and a valid MAC wins; its identifier
+   becomes the new "last known" identifier and all other attempts are cancelled.
+3. A candidate that answers `sessionReject`, sends a wrong `bridgeId`, or fails the MAC goes on an
+   ignore list for 10 minutes and is disconnected.
+4. Scanning stops while a session is up and restarts immediately on any disconnect.
+5. Liveness: send `ping` (§5.1) every 60 s while a session is up. No response within 10 s, or any
+   request timing out on a link that otherwise looks connected, means the link is half-open:
+   cancel the connection and go to step 1. Reconnect attempts never back off beyond 5 s between
+   tries while in the foreground.
+
+Bridge (Android):
+1. Keeps advertising at all times (see §1). While no session is up it uses low-latency advertising.
+2. Accepts a new central even while a session is active. Handshakes run in parallel (max 3,
+   10 s handshake timeout each). When a newcomer **completes an authenticated session as the paired
+   client** (valid first encrypted message), every older link is closed immediately. Unauthenticated
+   newcomers never displace anything.
+3. Drops an ACTIVE link after 15 minutes without an authenticated frame. The central pings every
+   60 s while awake, but a backgrounded iPhone app is only woken every few minutes, so the timeout
+   must stay well above one loop interval; ghost links are removed by preemption (rule 2), not by
+   this timeout.
+4. Recreates the GATT server and advertising after Bluetooth restarts, advertising failures, or
+   when the GATT service disappears, and never needs the user to open the app for that.
 
 ## 2. Framing
 
@@ -163,6 +197,7 @@ timestamps ISO-8601 UTC with `Z`, pump-local times additionally as `pumpLocal` s
 | `confirmAlert` | `{"alertId":int,"alertType":"…"}` | `{}` |
 | `snoozeAlert` | `{"alertId":int,"alertType":"…"}` | `{}` |
 | `getRequestOutcome` | `{"requestId":"<uuid>"}` | `{"state":"unknown"\|"inProgress"\|"succeeded"\|"failed"\|"uncertain","result":{…}\|null,"error":{…}\|null,"completedAt":"…Z"\|null}` |
+| `ping` | – | `{"uptimeSeconds":int,"pumpLink":"…","statusTimestamp":"…Z"\|null}` (no pump traffic; answered < 1 s and **concurrently** with any running command, never queued behind it) |
 | `pumpPairingStatus` | – | `{"paired":bool,"serial":str\|null,"bridgeBluetoothOn":bool}` |
 
 Rules:

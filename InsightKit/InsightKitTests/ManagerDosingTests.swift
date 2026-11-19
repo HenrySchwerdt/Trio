@@ -686,16 +686,71 @@ final class ManagerSettingsTests: XCTestCase {
         XCTAssertEqual(h.state.basalSchedule?.hourlyRates[7], 1.2)
     }
 
-    func testNonHourlyScheduleIsRejectedWithoutTouchingThePump() {
-        let h = ManagerHarness()
-        let half = [RepeatingScheduleValue(startTime: 0, value: 1.0), RepeatingScheduleValue(startTime: 1800, value: 1.2)]
-        guard case let .failure(error) = h.syncSchedule(half) else { return XCTFail() }
-        XCTAssertTrue(
-            error.localizedDescription.contains("full hours") || (error as? PumpManagerError).map { "\($0)" }
-                .map { $0.contains("notHourly") || $0.contains("configuration") } == true
+    func testNonHourlyScheduleIsConvertedConservativelyInsteadOfRefused() {
+        let h = ManagerHarness { $0.basalScheduleSynced = false }
+        let half = [
+            RepeatingScheduleValue(startTime: 0, value: 1.0),
+            RepeatingScheduleValue(startTime: 1800, value: 1.2),
+            RepeatingScheduleValue(startTime: 7200, value: 0.85),
+            RepeatingScheduleValue(startTime: 9000, value: 0.9)
+        ]
+        guard case let .success(daily) = h.syncSchedule(half) else { return XCTFail("must not fail") }
+        // hour 0: min(1.0, 1.2) = 1.0; hour 1: 1.2; hour 2: min(0.85, 0.85); hour 2.5 -> 0.9 starts inside hour 2
+        let rates = h.state.basalSchedule!.hourlyRates
+        XCTAssertEqual(rates[0], 1.0)
+        XCTAssertEqual(rates[1], 1.2)
+        XCTAssertEqual(rates[2], 0.85, "minimum of 0.85 and 0.9")
+        XCTAssertEqual(rates[3], 0.9)
+        XCTAssertEqual(h.client.profileCalls.count, 1)
+        XCTAssertTrue(h.state.basalScheduleSynced)
+        XCTAssertNotNil(h.state.simplifiedProfileSource, "recorded, and the user is told once")
+        XCTAssertTrue(eventually {
+            h.delegate.issuedAlerts
+                .filter { $0.identifier.alertIdentifier == InsightAlertCatalog.profileSimplifiedAlertIdentifier }.count == 1 })
+        XCTAssertEqual(daily.items.count, h.state.basalSchedule!.segments.count, "the schedule the pump runs is reported back")
+        // TBR math uses the converted schedule
+        h.advance(70) // cached status expires
+        let pumpRateNow = h.state.basalSchedule!.rate(at: h.now, in: h.state.pumpTimeZone)
+        h.client.status = h.status(basalRate: pumpRateNow)
+        XCTAssertNil(h.tbr(pumpRateNow * 0.6))
+        XCTAssertEqual(h.client.setTbrCalls.last?.percent, 60, "60% of what the PUMP runs (the converted schedule)")
+        // the same profile again does not alert again
+        _ = h.syncSchedule(half)
+        _ = eventually(0.3) { false }
+        XCTAssertEqual(
+            h.delegate.issuedAlerts
+                .filter { $0.identifier.alertIdentifier == InsightAlertCatalog.profileSimplifiedAlertIdentifier }.count,
+            1
         )
-        XCTAssertTrue(h.client.profileCalls.isEmpty)
-        XCTAssertTrue(h.state.basalScheduleSynced, "the previous schedule is untouched")
+    }
+
+    func testHourlyScheduleIsNotReportedAsSimplified() {
+        let h = ManagerHarness()
+        let items = [RepeatingScheduleValue(startTime: 0, value: 1.0), RepeatingScheduleValue(startTime: 3600 * 6, value: 1.2)]
+        guard case .success = h.syncSchedule(items) else { return XCTFail() }
+        XCTAssertNil(h.state.simplifiedProfileSource)
+        _ = eventually(0.3) { false }
+        XCTAssertTrue(
+            h.delegate.issuedAlerts
+                .filter { $0.identifier.alertIdentifier == InsightAlertCatalog.profileSimplifiedAlertIdentifier }.isEmpty
+        )
+    }
+
+    func testConversionRoundsDownToThePumpGridAndValidatesRange() throws {
+        let c = try InsightBasalSchedule.simplified(items: [RepeatingScheduleValue(startTime: 0, value: 0.857)])
+        XCTAssertEqual(c.schedule.hourlyRates[0], 0.85)
+        XCTAssertTrue(c.wasSimplified)
+        let high = try InsightBasalSchedule.simplified(items: [RepeatingScheduleValue(startTime: 0, value: 5.37)])
+        XCTAssertEqual(high.schedule.hourlyRates[5], 5.3)
+        XCTAssertThrowsError(try InsightBasalSchedule.simplified(items: [RepeatingScheduleValue(startTime: 0, value: 0.0)]))
+        XCTAssertThrowsError(try InsightBasalSchedule.simplified(items: [RepeatingScheduleValue(startTime: 600, value: 1.0)]))
+        XCTAssertThrowsError(try InsightBasalSchedule.simplified(items: [
+            RepeatingScheduleValue(startTime: 0, value: 1.0), RepeatingScheduleValue(startTime: 0, value: 1.0)
+        ]))
+        // 48 half-hour entries (Trio's editor allows them)
+        let many = (0 ..< 48).map { RepeatingScheduleValue(startTime: TimeInterval($0 * 1800), value: $0 % 2 == 0 ? 1.0 : 0.9) }
+        let m = try InsightBasalSchedule.simplified(items: many)
+        XCTAssertEqual(m.schedule.hourlyRates, Array(repeating: 0.9, count: 24))
     }
 
     func testUncertainOrUnverifiedProfileBlocksTbrUntilResynced() {

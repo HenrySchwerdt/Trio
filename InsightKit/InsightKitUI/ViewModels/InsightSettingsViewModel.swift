@@ -16,8 +16,22 @@ final class InsightSettingsViewModel: ObservableObject, InsightStateObserver {
     @Published private(set) var state: InsightPumpManagerState
     @Published private(set) var connection: BridgeSessionState
     @Published private(set) var now = Date()
-    @Published var busyAction: Action?
+    /// Running actions with their token. Safety actions (suspend, stop temp basal) run next to anything else.
+    @Published private(set) var running = [Action: Int]()
+    /// The running non-safety action (nil: none). Settable for previews/tests.
+    var busyAction: Action? {
+        get { running.first { !Self.isSafety($0.key) }?.key }
+        set {
+            for key in running.keys where !Self.isSafety(key) { running[key] = nil }
+            if let newValue { actionToken += 1
+                running[newValue] = actionToken }
+        }
+    }
+
+    func isBusy(_ action: Action) -> Bool { running[action] != nil }
+    static func isSafety(_ action: Action) -> Bool { action == .suspend || action == .stopTempBasal }
     @Published var resultMessage: ResultMessage?
+    private var actionToken = 0
 
     struct ResultMessage: Identifiable {
         let id = UUID()
@@ -27,9 +41,13 @@ final class InsightSettingsViewModel: ObservableObject, InsightStateObserver {
 
     let manager: InsightPumpManager
     let supportedInsulinTypes: [InsulinType]
-    var onRepair: () -> Void = {}
-    var onResolveUncertainty: () -> Void = {}
-    var onDelete: () -> Void = {}
+    /// Navigation hooks owned by the coordinator. A missing hook is reported, never silently ignored.
+    var onRepair: (() -> Void)?
+    var onResolveUncertainty: (() -> Void)?
+    var onDelete: (() -> Void)?
+
+    /// How long an action may stay "busy" without an answer before the screen says so (and unblocks).
+    static var actionWatchdog: TimeInterval = 75
 
     private var timer: AnyCancellable?
 
@@ -104,20 +122,51 @@ final class InsightSettingsViewModel: ObservableObject, InsightStateObserver {
         return L("%@ of %@", InsightFormat.units(bolus.deliveredUnits, digits: 2), InsightFormat.units(bolus.units, digits: 2))
     }
 
+    var linkStatus: InsightLinkStatus {
+        _ = now // re-evaluated with the periodic tick ("bridge not found" appears after a while)
+        return manager.linkStatus
+    }
+
     var connectionTitle: String {
-        switch connection {
-        case .ready: return L("Connected")
-        case .handshaking: return L("Securing connection…")
-        case .linkConnecting: return L("Connecting…")
-        case .idle: return L("Not connected")
+        switch linkStatus {
+        case .connected: return L("Connected")
+        case let .reconnecting(since): return L("Reconnecting since %@", InsightFormat.time.string(from: since))
+        case let .bridgeNotFound(since): return L("Bridge not found since %@", InsightFormat.time.string(from: since))
         case let .bluetoothUnavailable(reason): return reason
         case .needsRepair: return L("Pair the bridge again")
         case .incompatible: return L("Incompatible app version")
         case .pairing: return L("Pairing…")
+        case .idle: return L("Not connected")
         }
     }
 
+    /// Extra line under the bridge status that says what to do.
+    var connectionHint: String? {
+        switch linkStatus {
+        case .bridgeNotFound:
+            return L(
+                "Trio keeps searching in the background. Check that the Android phone is on, the InsightBridge app is running and Bluetooth is enabled on both phones."
+            )
+        case .reconnecting:
+            return L("Trio keeps trying to reconnect by itself. You do not need to do anything.")
+        default: return nil
+        }
+    }
+
+    var loopBlockedReason: String? { state.loopBlockedReason }
+
+    var profileWasSimplified: Bool { state.simplifiedProfileSource != nil }
+
     var connectionIsOK: Bool { connection == .ready }
+    var bridgeStatusIsProblem: Bool {
+        switch linkStatus {
+        case .connected: return false
+        case .idle,
+             .pairing,
+             .reconnecting: return false
+        default: return true
+        }
+    }
 
     var repairSuspected: Bool { manager.repairSuspected && connection != .ready }
 
@@ -200,32 +249,99 @@ final class InsightSettingsViewModel: ObservableObject, InsightStateObserver {
 
     // MARK: actions
 
+    /// Why `action` cannot start right now (nil: it can). Risk-reducing actions (suspend, stop temp basal) are never
+    /// blocked by an uncertain command; actions that add insulin or rewrite the profile are.
+    func blockedReason(for action: Action) -> String? {
+        if Self.isSafety(action) {
+            // Never queued behind other actions or blocked by an uncertain command; only a repeat of itself waits.
+            return isBusy(action) ? L("This action is already running.") : nil
+        }
+        if busyAction != nil { return L("Another action is still running. Please wait a moment.") }
+        switch action {
+        case .refresh,
+             .stopTempBasal,
+             .suspend,
+             .syncTime:
+            return nil
+        case .resume,
+             .syncBasal:
+            if state.isDeliveryUncertain {
+                return L("An earlier insulin command has an unknown result. Resolve the uncertain delivery first.")
+            }
+            return nil
+        }
+    }
+
+    /// Starts `action` if possible and returns its token. Otherwise the reason is shown: a tap never does nothing.
+    private func begin(_ action: Action, title: String) -> Int? {
+        if let reason = blockedReason(for: action) {
+            resultMessage = ResultMessage(title: title, text: reason)
+            return nil
+        }
+        actionToken += 1
+        let token = actionToken
+        running[action] = token
+        DispatchQueue.main.asyncAfter(deadline: .now() + Self.actionWatchdog) { [weak self] in
+            self?.watchdogFired(action, token: token, title: title)
+        }
+        return token
+    }
+
+    func showBlocked(title: String, reason: String) {
+        resultMessage = ResultMessage(title: title, text: reason)
+    }
+
+    private func watchdogFired(_ action: Action, token: Int, title: String) {
+        guard running[action] == token else { return }
+        running[action] = nil
+        resultMessage = ResultMessage(
+            title: title,
+            text: L(
+                "There is no answer yet. The connection to the bridge may be down; Trio keeps trying. Check the pump status before repeating the action."
+            )
+        )
+    }
+
+    /// Ends the action run `token` belongs to. A late answer after the watchdog (or after a newer run of the same
+    /// action started) never clears the newer run's busy flag.
+    private func end(_ action: Action, token: Int) {
+        if running[action] == token { running[action] = nil }
+    }
+
     func stopTempBasal() {
-        busyAction = .stopTempBasal
+        let title = L("Stop Temp Basal")
+        guard let token = begin(.stopTempBasal, title: title) else { return }
         manager.stopTempBasal { error in
-            self.busyAction = nil
+            self.end(.stopTempBasal, token: token)
             if let error {
-                self.resultMessage = ResultMessage(title: L("Stop Temp Basal"), text: error.localizedDescription)
+                self.resultMessage = ResultMessage(title: title, text: error.localizedDescription)
+            } else {
+                self.resultMessage = ResultMessage(title: title, text: L("The temp basal was stopped."))
             }
         }
     }
 
     func suspend() {
-        run(.suspend, title: L("Suspend insulin")) { done in self.manager.suspend(completion: done) }
+        run(.suspend, title: L("Suspend insulin"), success: L("Insulin delivery is suspended.")) { done in
+            self.manager.suspend(completion: done)
+        }
     }
 
     func resume() {
-        run(.resume, title: L("Resume insulin")) { done in self.manager.resume(completion: done) }
+        run(.resume, title: L("Resume insulin"), success: L("Insulin delivery is resumed.")) { done in
+            self.manager.resume(completion: done)
+        }
     }
 
     func syncTime() {
-        busyAction = .syncTime
+        let title = L("Pump time")
+        guard let token = begin(.syncTime, title: title) else { return }
         manager.syncTime { result in
             DispatchQueue.main.async {
-                self.busyAction = nil
+                self.end(.syncTime, token: token)
                 switch result {
                 case .success:
-                    self.resultMessage = ResultMessage(title: L("Pump time"), text: L("The pump time was set."))
+                    self.resultMessage = ResultMessage(title: title, text: L("The pump time was set."))
                 case let .failure(error):
                     self.resultMessage = ResultMessage(title: L("Could not set the time"), text: error.localizedDescription)
                 }
@@ -234,9 +350,9 @@ final class InsightSettingsViewModel: ObservableObject, InsightStateObserver {
     }
 
     func syncBasalProfile() {
-        busyAction = .syncBasal
+        guard let token = begin(.syncBasal, title: L("Basal profile")) else { return }
         manager.resyncBasalProfile { result in
-            self.busyAction = nil
+            self.end(.syncBasal, token: token)
             switch result {
             case .success:
                 self.resultMessage = ResultMessage(
@@ -250,16 +366,50 @@ final class InsightSettingsViewModel: ObservableObject, InsightStateObserver {
     }
 
     func refresh() {
-        busyAction = .refresh
-        manager.refreshNow { self.busyAction = nil }
+        let title = L("Sync pump data")
+        guard let token = begin(.refresh, title: title) else { return }
+        manager.refreshNow { result in
+            self.end(.refresh, token: token)
+            if case let .failure(error) = result {
+                self.resultMessage = ResultMessage(title: title, text: error.localizedDescription)
+            }
+        }
     }
 
-    private func run(_ action: Action, title: String, _ work: (@escaping (Error?) -> Void) -> Void) {
-        busyAction = action
+    func requestRepair() {
+        guard let onRepair else {
+            resultMessage = ResultMessage(title: L("Pair bridge again"), text: L("This is not available on this screen."))
+            return
+        }
+        onRepair()
+    }
+
+    func requestResolveUncertainty() {
+        guard let onResolveUncertainty else {
+            resultMessage = ResultMessage(
+                title: L("Resolve uncertain delivery"), text: L("This is not available on this screen.")
+            )
+            return
+        }
+        onResolveUncertainty()
+    }
+
+    func requestDelete() {
+        guard let onDelete else {
+            resultMessage = ResultMessage(title: L("Delete Pump"), text: L("This is not available on this screen."))
+            return
+        }
+        onDelete()
+    }
+
+    private func run(_ action: Action, title: String, success: String, _ work: (@escaping (Error?) -> Void) -> Void) {
+        guard let token = begin(action, title: title) else { return }
         work { error in
-            self.busyAction = nil
+            self.end(action, token: token)
             if let error {
                 self.resultMessage = ResultMessage(title: title, text: error.localizedDescription)
+            } else {
+                self.resultMessage = ResultMessage(title: title, text: success)
             }
         }
     }

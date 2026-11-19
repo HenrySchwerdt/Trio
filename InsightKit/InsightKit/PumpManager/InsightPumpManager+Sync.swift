@@ -17,6 +17,7 @@ extension InsightPumpManager: InsightBridgeClientDelegate {
         stateObservers.forEach { $0.connectionDidUpdate(connection) }
 
         if case .ready = connection {
+            connectionLostSinceStore.value = nil
             disconnectTimer?.cancel()
             disconnectTimer = nil
             retractDisconnectAlertIfNeeded()
@@ -28,10 +29,21 @@ extension InsightPumpManager: InsightBridgeClientDelegate {
             }
             refreshAll(reason: "session ready")
             resolvePendingCommandIfNeeded(reason: "session ready")
-        } else if state.isOnboarded {
-            armDisconnectTimer()
+        } else {
+            if connectionLostSinceStore.value == nil { connectionLostSinceStore.value = clock() }
+            if state.isOnboarded { armDisconnectTimer() }
         }
         notifyStateDidChange()
+    }
+
+    /// The bridge authenticated under a (possibly new) BLE identifier: remember it, it is the starting point of the
+    /// next reconnect (the address rotates, see PROTOCOL.md §1a).
+    public func bridgeClient(_: InsightBridgeClient, didAdoptPeripheral id: UUID) {
+        queue.async {
+            guard self.state.peripheralIdentifier != id.uuidString else { return }
+            self.mutate { $0.peripheralIdentifier = id.uuidString }
+            self.notifyStateDidChange()
+        }
     }
 
     private func handle(event: BridgeEvent) {
@@ -153,6 +165,7 @@ extension InsightPumpManager: InsightBridgeClientDelegate {
             if replaced {
                 st.lastHistorySequence = nil
                 st.basalScheduleSynced = false
+                st.profileWriteFailed = nil
                 st.tempBasals = []
                 st.finalizedLocal = []
                 st.finalizedBolusIds = []
@@ -348,8 +361,50 @@ extension InsightPumpManager: InsightBridgeClientDelegate {
     private func finishRefresh() {
         notifyStateDidChange()
         maybeSyncTimeAutomatically()
+        maybeResyncProfileAutomatically()
         armBolusWatch()
         scheduleTempBasalExpiryNotification()
+    }
+
+    // MARK: - Profile self-healing
+
+    static let profileResyncInterval: TimeInterval = 10 * 60
+
+    /// Temp basals are refused while the pump profile is not confirmed. When the only reason is that a write did not
+    /// finish cleanly (not that the pump contradicted Trio's profile), the last requested profile is written again, at
+    /// most every 10 minutes, so that looping does not wait for a manual "Sync basal profile".
+    /// At most this many automatic writes per profile, then the user is told to sync by hand.
+    static let maxAutoProfileResyncs = 3
+
+    func maybeResyncProfileAutomatically() {
+        let s = state
+        guard s.isOnboarded, !s.basalScheduleSynced, s.profileWriteFailed == true, s.basalMismatchCount < 2,
+              s.pendingCommand == nil, client.sessionState == .ready, s.bolus?.phase != .inProgress,
+              let schedule = s.desiredBasalSchedule ?? s.basalSchedule else { return }
+        let now = clock()
+        // Never rewrite the profile under a running temp basal (the pump keeps its percentage).
+        if s.runningTempBasal(at: now) != nil || lastStatus?.tbr != nil { return }
+        if let last = lastProfileAutoResync, now.timeIntervalSince(last) < Self.profileResyncInterval { return }
+        if autoResyncAttempts >= Self.maxAutoProfileResyncs {
+            // Give up quietly no longer: say so once and leave it to the user.
+            mutate { $0.profileWriteFailed = nil }
+            let alert = InsightAlertCatalog.loopBlockedAlert(reason: LocalizedString(
+                "Trio could not confirm the basal profile on the pump after several tries. Open the pump settings and tap Sync basal profile.",
+                comment: "Alert body"
+            ))
+            pumpDelegate.notify { delegate in
+                guard let delegate else { return }
+                Task { await delegate.issueAlert(alert) }
+            }
+            notifyStateDidChange()
+            return
+        }
+        lastProfileAutoResync = now
+        autoResyncAttempts += 1
+        log.info("basal profile not confirmed: writing it again automatically (\(autoResyncAttempts))")
+        pushBasalSchedule(schedule, force: true) { [weak self] result in
+            if case .failure = result { self?.log.warning("automatic profile write failed") }
+        }
     }
 
     // MARK: - History

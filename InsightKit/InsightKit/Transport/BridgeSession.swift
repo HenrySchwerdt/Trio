@@ -20,6 +20,12 @@ public enum BridgeSessionState: Equatable {
 public protocol BridgeSessionDelegate: AnyObject {
     func sessionDidChangeState(_ session: BridgeSession)
     func session(_ session: BridgeSession, didReceive event: BridgeEvent)
+    /// The paired bridge authenticated on this peripheral identifier (it may differ from the remembered one).
+    func session(_ session: BridgeSession, didAdoptPeripheral id: UUID)
+}
+
+public extension BridgeSessionDelegate {
+    func session(_: BridgeSession, didAdoptPeripheral _: UUID) {}
 }
 
 public enum PairingEvent: Equatable {
@@ -66,6 +72,9 @@ public final class BridgeSession: BridgeLinkDelegate {
     private let scheduler: BridgeScheduler
     private let queue: DispatchQueue
     private let appName: String
+    private let clock: () -> Date
+    /// When the last authenticated message was received (liveness across background wake-ups).
+    private var lastExchange = Date.distantPast
     private let log = InsightLog(category: "BridgeSession")
 
     public weak var delegate: BridgeSessionDelegate?
@@ -105,6 +114,11 @@ public final class BridgeSession: BridgeLinkDelegate {
     }
 
     private var rejectRetry: BridgeCancellable?
+    private var pingTimer: BridgeCancellable?
+    private var pingInFlight = false
+    /// Count of authenticated messages received; any of them proves the link is alive.
+    private var inboundCount = 0
+    private var pingInboundMark = 0
 
     /// The bridge this session talks to (credentials looked up in the store).
     public private(set) var bridgeId: String?
@@ -121,14 +135,19 @@ public final class BridgeSession: BridgeLinkDelegate {
     private var pairingTimer: BridgeCancellable?
     private var pairingHandler: ((PairingEvent) -> Void)?
     private var wantsConnection = false
+    private var handledGeneration = -1
+    /// The link connection the current handshake/session runs on (verdicts to the link carry it).
+    private var sessionGeneration = 0
 
     public init(
         link: BridgeLink,
         store: BridgeCredentialStoring,
         scheduler: BridgeScheduler,
         queue: DispatchQueue,
-        appName: String
+        appName: String,
+        clock: @escaping () -> Date = Date.init
     ) {
+        self.clock = clock
         self.link = link
         self.store = store
         self.scheduler = scheduler
@@ -145,6 +164,8 @@ public final class BridgeSession: BridgeLinkDelegate {
             self.bridgeId = bridgeId
             self.credentials = self.store.load(bridgeId: bridgeId)
             self.link.targetPeripheral = peripheral
+            self.link.allowsCandidates = true
+            self.link.expectedBridgeId = bridgeId
             self.wantsConnection = true
             self.repairSuspected = false
             guard self.credentials != nil else {
@@ -163,6 +184,8 @@ public final class BridgeSession: BridgeLinkDelegate {
             if case .needsRepair = self.state { return }
             if case .incompatible = self.state { return }
             self.link.start()
+            // The app was away for a while: prove that the link is still alive instead of waiting for the next ping.
+            if self.state == .ready { self.rearmLivenessAfterWake() }
         }
     }
 
@@ -179,7 +202,10 @@ public final class BridgeSession: BridgeLinkDelegate {
     private func startLinkIfNeeded() {
         switch link.state {
         case .connected:
-            if state != .ready, state != .handshaking { beginSession() }
+            if state != .ready, state != .handshaking {
+                handledGeneration = link.connectionGeneration
+                beginSession()
+            }
         case .connecting:
             setState(.linkConnecting)
         case let .bluetoothUnavailable(reason):
@@ -311,6 +337,12 @@ public final class BridgeSession: BridgeLinkDelegate {
         guard let entry = pending.removeValue(forKey: id) else { return }
         log.warning("request \(entry.op.rawValue) timed out")
         entry.completion(.failure(.timeout))
+        if entry.op == .ping {
+            // Anything received since the ping went out (a response, an event) shows the link is alive; and while a
+            // dosing request is running its own timeout decides, a ping must never fail it.
+            if inboundCount != pingInboundMark { return }
+            if pending.values.contains(where: { $0.op.isDosing }) { return }
+        }
         // The link may be half-open: drop it and reconnect.
         handleLinkProblem(.linkLost, resetLink: true)
     }
@@ -320,7 +352,62 @@ public final class BridgeSession: BridgeLinkDelegate {
     private func setState(_ new: BridgeSessionState) {
         guard state != new else { return }
         state = new
+        if new == .ready {
+            lastExchange = clock()
+            schedulePing()
+        } else { cancelPing() }
         delegate?.sessionDidChangeState(self)
+    }
+
+    // MARK: liveness (§1a.5)
+
+    private func schedulePing(after interval: TimeInterval = BridgeProtocol.pingInterval) {
+        pingTimer?.cancel()
+        pingTimer = scheduler.schedule(after: interval) { [weak self] in
+            guard let self else { return }
+            self.pingTimer = nil
+            guard self.state == .ready else { return }
+            // A running request proves liveness by its own answer or timeout: no ping on top of it.
+            if !self.pending.isEmpty { self.schedulePing(after: 10)
+                return }
+            self.sendPing()
+        }
+    }
+
+    /// The app woke up (foreground, loop cycle, BLE event). Timers that ran while it was suspended fire before the BLE
+    /// input that arrived meanwhile is processed, so pending ping timeouts start again from now. If the last
+    /// authenticated exchange is older than a minute a ping goes out right away (after the input that is already
+    /// queued was handled), which keeps the link warm: the bridge drops an idle ACTIVE link after 15 minutes.
+    private func rearmLivenessAfterWake() {
+        for (id, entry) in pending where entry.op == .ping {
+            var rearmed = entry
+            entry.timer?.cancel()
+            rearmed.timer = scheduler.schedule(after: entry.op.timeout) { [weak self] in self?.requestTimedOut(id) }
+            pending[id] = rearmed
+        }
+        queue.async { [weak self] in
+            guard let self, self.state == .ready else { return }
+            if self.clock().timeIntervalSince(self.lastExchange) >= BridgeProtocol.pingInterval { self.sendPing() }
+        }
+    }
+
+    private func cancelPing() {
+        pingTimer?.cancel()
+        pingTimer = nil
+        pingInFlight = false
+    }
+
+    /// No answer within `pingTimeout` makes `requestTimedOut` drop the (half-open) link and search again.
+    private func sendPing() {
+        guard state == .ready, codec != nil, !pingInFlight, pending.isEmpty else { return }
+        pingInFlight = true
+        pingInboundMark = inboundCount
+        transmit(.ping, args: .object([:])) { [weak self] _ in
+            guard let self else { return }
+            // Any answer (even an error from an older bridge) proves the link is alive.
+            self.pingInFlight = false
+            if self.state == .ready { self.schedulePing() }
+        }
     }
 
     private func failAllPending(_ error: BridgeError) {
@@ -371,11 +458,23 @@ public final class BridgeSession: BridgeLinkDelegate {
     private func handleLinkState() {
         switch link.state {
         case .connected:
+            let generation = link.connectionGeneration
             if pairing != nil {
+                handledGeneration = generation
                 beginPairingExchange()
             } else if wantsConnection {
                 if case .needsRepair = state { return }
-                if state == .ready || state == .handshaking { return }
+                if state == .ready || state == .handshaking {
+                    guard generation != handledGeneration else { return }
+                    // The link switched to another connection (a candidate replaced the old one, or the bridge
+                    // reconnected without us noticing a gap): whatever session we had belongs to the old one.
+                    handshakeTimer?.cancel()
+                    handshakeTimer = nil
+                    codec = nil
+                    hello = nil
+                    failAllPending(.linkLost)
+                }
+                handledGeneration = generation
                 beginSession()
             }
         case .connecting:
@@ -404,6 +503,10 @@ public final class BridgeSession: BridgeLinkDelegate {
              .needsRepair: return true
         default: return false
         }
+    }
+
+    public func link(_: BridgeLink, didAdoptPeripheral id: UUID) {
+        queue.async { self.delegate?.session(self, didAdoptPeripheral: id) }
     }
 
     public func link(_: BridgeLink, didReceive envelope: Data) {
@@ -436,6 +539,8 @@ public final class BridgeSession: BridgeLinkDelegate {
             handleLinkProblem(.protocolViolation("envelope"), resetLink: true)
             return
         }
+        inboundCount &+= 1
+        lastExchange = clock()
         guard let value = try? BridgeJSON.decoder.decode(BridgeValue.self, from: plain) else {
             log.warning("undecodable message")
             return
@@ -500,6 +605,7 @@ public final class BridgeSession: BridgeLinkDelegate {
             return
         }
         credentials = creds
+        sessionGeneration = link.connectionGeneration
         let nonce = Self.randomBytes(16)
         sessionNonceI = nonce
         codec = nil
@@ -515,10 +621,12 @@ public final class BridgeSession: BridgeLinkDelegate {
             return
         }
         handshakeTimer?.cancel()
-        handshakeTimer = scheduler.schedule(after: BridgeProtocol.pairingResponseTimeout) { [weak self] in
+        handshakeTimer = scheduler.schedule(after: BridgeProtocol.handshakeTimeout) { [weak self] in
             guard let self, self.state == .handshaking else { return }
             self.log.warning("handshake timed out")
-            self.handleLinkProblem(.timeout, resetLink: true)
+            // Silent device: skip it for a short while (unless it is the remembered bridge) and try the next one.
+            self.teardownConnection(error: .notConnected, newState: .linkConnecting)
+            self.link.abandonCandidate(connection: self.sessionGeneration)
         }
     }
 
@@ -538,27 +646,36 @@ public final class BridgeSession: BridgeLinkDelegate {
         }
     }
 
-    /// `sessionReject` is plaintext and unauthenticated, so anybody in radio range could send one. A single
-    /// reject only raises a suspicion and reconnects later; it takes a second reject on a separate connection
-    /// before the pairing is declared broken.
+    /// `sessionReject` is plaintext and unauthenticated, so anybody in radio range could send one. The candidate
+    /// that sent it goes on the ignore list and the search continues (§1a.3). A first reject only raises a
+    /// suspicion; it takes a second one from another connection before the pairing is declared broken.
     private func handleSessionReject(_ reason: String) {
         guard state == .handshaking else { return }
         log.warning("session rejected: \(reason)")
+        rejectCandidateOrDeclareRepair(error: .sessionRejected(reason), reason: reason)
+    }
+
+    /// This connection is not the paired bridge: ignore it and let the link try the next candidate (§1a.3).
+    /// Only the remembered bridge itself can make the pairing look broken: rejects / MAC failures of any other
+    /// candidate (a neighbour's bridge, anybody in radio range) are just ignored and can never stop the link. Two
+    /// such failures from the remembered bridge (on separate connections) mean the pairing is broken (re-pair).
+    private func rejectCandidateOrDeclareRepair(error: BridgeError, reason: String) {
+        handshakeTimer?.cancel()
+        handshakeTimer = nil
+        guard link.activeIsTarget else {
+            log.warning("a candidate other than the remembered bridge failed the handshake: ignored")
+            teardownConnection(error: .notConnected, newState: .linkConnecting)
+            link.rejectCandidate(connection: sessionGeneration)
+            return
+        }
         if repairSuspected {
-            rejectRetry?.cancel()
-            rejectRetry = nil
-            teardownConnection(error: .sessionRejected(reason), newState: .needsRepair(reason))
+            teardownConnection(error: error, newState: .needsRepair(reason))
             link.stop()
             return
         }
         repairSuspected = true
         teardownConnection(error: .notConnected, newState: .linkConnecting)
-        rejectRetry?.cancel()
-        rejectRetry = scheduler.schedule(after: BridgeProtocol.sessionRejectRetryDelay) { [weak self] in
-            guard let self, self.wantsConnection else { return }
-            self.rejectRetry = nil
-            self.link.reset()
-        }
+        link.rejectCandidate(connection: sessionGeneration)
     }
 
     private func handleSessionResp(_ message: [String: Any]) {
@@ -570,16 +687,17 @@ public final class BridgeSession: BridgeLinkDelegate {
             return
         }
         if let responded = message["bridgeId"] as? String, responded.lowercased() != creds.bridgeId.lowercased() {
-            teardownConnection(error: .macMismatch, newState: .needsRepair("bridge identity changed"))
-            link.stop()
+            // A different bridge (e.g. a neighbour's): not ours, not a reason to re-pair. Ignore this candidate.
+            log.warning("candidate is a different bridge")
+            teardownConnection(error: .notConnected, newState: .linkConnecting)
+            link.rejectCandidate(connection: sessionGeneration)
             return
         }
         let ltk = SymmetricKey(data: creds.ltk)
         let expected = BridgeKDF.sessionMac(ltk: ltk, nonceI: nonceI, nonceB: nonceB)
         guard BridgeKDF.verify(mac: mac, expected: expected) else {
             log.error("session MAC mismatch")
-            teardownConnection(error: .macMismatch, newState: .needsRepair("verification failed"))
-            link.stop()
+            rejectCandidateOrDeclareRepair(error: .macMismatch, reason: "verification failed")
             return
         }
         let sk = BridgeKDF.sessionKey(ltk: ltk, nonceI: nonceI, nonceB: nonceB)
@@ -606,6 +724,11 @@ public final class BridgeSession: BridgeLinkDelegate {
                 }
                 self.hello = hello
                 self.repairSuspected = false
+                self.link
+                    .markAuthenticated(
+                        connection: self
+                            .sessionGeneration
+                    ) // this candidate won: its identifier is remembered, others are dropped
                 self.setState(.ready)
                 self.flushWaiting()
             case let .failure(error):
@@ -636,6 +759,7 @@ public final class BridgeSession: BridgeLinkDelegate {
                 nonceI: Self.randomBytes(16),
                 clientId: Self.randomBytes(8).hexString
             )
+            self.link.allowsCandidates = false
             self.link.targetPeripheral = peripheral
             if self.link.state == .connected {
                 self.beginPairingExchange()
@@ -764,6 +888,7 @@ public final class BridgeSession: BridgeLinkDelegate {
         let handler = pairingHandler
         pairing = nil
         pairingHandler = nil
+        link.allowsCandidates = true
         if case .failed = event, state == .pairing { setState(.idle) }
         handler?(event)
     }

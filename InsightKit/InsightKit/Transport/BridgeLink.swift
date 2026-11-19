@@ -44,6 +44,13 @@ public protocol BridgeLinkDelegate: AnyObject {
     func linkDidChangeState(_ link: BridgeLink)
     /// A complete, reassembled envelope (§3).
     func link(_ link: BridgeLink, didReceive envelope: Data)
+    /// The authenticated bridge is now reachable under this peripheral identifier (§1a: it may have changed
+    /// because the bridge rotated its BLE address). Persist it.
+    func link(_ link: BridgeLink, didAdoptPeripheral id: UUID)
+}
+
+public extension BridgeLinkDelegate {
+    func link(_: BridgeLink, didAdoptPeripheral _: UUID) {}
 }
 
 /// Message-level pipe to the bridge. The BLE implementation does fragmentation, MTU handling
@@ -51,14 +58,35 @@ public protocol BridgeLinkDelegate: AnyObject {
 public protocol BridgeLink: AnyObject {
     var delegate: BridgeLinkDelegate? { get set }
     var state: BridgeLinkState { get }
-    /// The remembered bridge (CoreBluetooth peripheral identifier).
+    /// The last known bridge (CoreBluetooth peripheral identifier). Only a starting point: the address rotates.
     var targetPeripheral: UUID? { get set }
-    /// Begin (and keep) connecting to `targetPeripheral`. Idempotent.
+    /// Begin (and keep) looking for the bridge (§1a). Idempotent.
     func start()
     /// Disconnect and stop reconnecting.
     func stop()
-    /// Drop the current connection (it may be half-open) and connect again.
+    /// Drop the current connection (it may be half-open) and search again.
     func reset()
+    /// `false` while pairing: only `targetPeripheral` may be used, no other candidate is connected.
+    var allowsCandidates: Bool { get set }
+    /// The connection `connection` (a `connectionGeneration`) has completed the session handshake as the paired
+    /// bridge (§1a.2): it becomes the new `targetPeripheral`, scanning stops and all other attempts are cancelled.
+    /// Ignored if that connection is no longer the active one (a late verdict must never apply to another device).
+    func markAuthenticated(connection: Int)
+    /// The connection is not the paired bridge (reject / wrong id / MAC failure): disconnect it, ignore it for
+    /// 10 minutes and continue with the next candidate. Ignored if `connection` is no longer the active one.
+    func rejectCandidate(connection: Int)
+    /// The connection never completed the handshake (silent device). Ignored for a short while, unless it is the
+    /// remembered bridge itself (that one is simply retried).
+    func abandonCandidate(connection: Int)
+    /// The active connection is the remembered (persisted) bridge identifier.
+    var activeIsTarget: Bool { get }
+    /// The bridge id this phone is paired with. Advertisements that name another bridge are not connected to.
+    var expectedBridgeId: String? { get set }
+    /// When a bridge advertisement was last seen (nil: none since launch).
+    var lastCandidateSeen: Date? { get }
+    /// Incremented every time a (new) connection becomes `.connected`, also when the state itself did not change
+    /// (a candidate replaced another one). The session restarts its handshake when this changes.
+    var connectionGeneration: Int { get }
     /// Sends one envelope. The completion reports failure to deliver all fragments.
     func send(_ envelope: Data, completion: @escaping (Error?) -> Void)
 }

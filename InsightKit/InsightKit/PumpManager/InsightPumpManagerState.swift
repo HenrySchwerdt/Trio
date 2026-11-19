@@ -216,6 +216,14 @@ public struct InsightPumpManagerState: RawRepresentable, Codable, Equatable {
     public var activeAlerts: [PumpAlertRecord] = []
     public var activePumpAlert: BridgeAlert?
     public var disconnectAlertIssued = false
+    /// Signature of the non-hourly profile Trio asked for that was converted to hourly rates for the pump
+    /// (nil: the pump profile is exactly what was asked for). Optional so older persisted states still decode.
+    public var simplifiedProfileSource: String?
+    /// A profile write ended without a clean answer (uncertain / read-back failed): worth writing again by itself.
+    public var profileWriteFailed: Bool?
+    /// Why the last dosing command was refused (shown to the user until a command is accepted again).
+    public var loopBlockedReason: String?
+    public var loopBlockedAlertAt: Date?
 
     public init() {}
 

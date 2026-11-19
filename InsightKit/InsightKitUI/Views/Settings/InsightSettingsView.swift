@@ -13,12 +13,19 @@ struct InsightSettingsView: View {
 
     @ObservedObject var viewModel: InsightSettingsViewModel
 
-    @State private var showSuspendConfirm = false
-    @State private var showResumeConfirm = false
-    @State private var showSyncBasalConfirm = false
-    @State private var showSyncTimeConfirm = false
-    @State private var showRepairConfirm = false
-    @State private var showDeleteConfirm = false
+    /// ONE confirmation for the whole screen. (Several `.actionSheet(isPresented:)` modifiers on the same view
+    /// override each other in SwiftUI: only the last one ever appeared, so most buttons did nothing.)
+    enum Confirmation: String, Identifiable {
+        case suspend
+        case resume
+        case syncBasal
+        case syncTime
+        case repair
+        case delete
+        var id: String { rawValue }
+    }
+
+    @State private var confirmation: Confirmation?
 
     private var state: InsightPumpManagerState { viewModel.state }
 
@@ -31,44 +38,57 @@ struct InsightSettingsView: View {
             pumpInformationSection
             pumpTimeSection
             Section {
-                Button { showRepairConfirm = true } label: {
+                Button { confirmation = .repair } label: {
                     Text(L("Pair bridge again"))
                 }
                 Button { openURL(InsightSetup.bridgeURL) } label: {
                     Text(L("InsightBridge help"))
                 }
-                Button { showDeleteConfirm = true } label: {
+                Button { confirmation = .delete } label: {
                     Text(L("Delete Pump")).foregroundColor(guidanceColors.critical)
                 }
             }
         }
         .listStyle(InsetGroupedListStyle())
         .navigationBarItems(trailing: Button(L("Done"), action: { dismiss() }))
-        .alert(item: $viewModel.resultMessage) { message in
-            Alert(title: Text(message.title), message: Text(message.text), dismissButton: .default(Text(L("OK"))))
+        .actionSheet(item: $confirmation) { sheet(for: $0) }
+        .background(
+            // The alert lives on its own view: an alert and an action sheet on the same view can override each other.
+            Color.clear.alert(item: $viewModel.resultMessage) { message in
+                Alert(title: Text(message.title), message: Text(message.text), dismissButton: .default(Text(L("OK"))))
+            }
+        )
+    }
+
+    private func requestConfirmation(_ sheet: Confirmation, action: InsightSettingsViewModel.Action, title: String) {
+        if let reason = viewModel.blockedReason(for: action) {
+            viewModel.showBlocked(title: title, reason: reason)
+        } else {
+            confirmation = sheet
         }
-        .actionSheet(isPresented: $showSuspendConfirm) {
-            ActionSheet(
+    }
+
+    private func sheet(for confirmation: Confirmation) -> ActionSheet {
+        switch confirmation {
+        case .suspend:
+            return ActionSheet(
                 title: Text(L("Suspend insulin delivery?")),
                 message: Text(L("The pump stops all insulin delivery, including basal, until you resume.")),
                 buttons: [.destructive(Text(L("Suspend insulin"))) { viewModel.suspend() }, .cancel()]
             )
-        }
-        .actionSheet(isPresented: $showResumeConfirm) {
-            ActionSheet(
+        case .resume:
+            return ActionSheet(
                 title: Text(L("Resume insulin delivery?")),
                 buttons: [.default(Text(L("Resume insulin"))) { viewModel.resume() }, .cancel()]
             )
-        }
-        .actionSheet(isPresented: $showSyncBasalConfirm) {
-            ActionSheet(
+        case .syncBasal:
+            return ActionSheet(
                 title: Text(L("Write the basal profile to the pump?")),
                 message: Text(L("Your current basal schedule is sent to the pump and read back to verify it.")),
                 buttons: [.default(Text(L("Sync basal profile"))) { viewModel.syncBasalProfile() }, .cancel()]
             )
-        }
-        .actionSheet(isPresented: $showSyncTimeConfirm) {
-            ActionSheet(
+        case .syncTime:
+            return ActionSheet(
                 title: Text(L("Time Change Detected")),
                 message: Text(
                     L("The time on your pump controls your scheduled basal. It will be set to the current time of this iPhone.")
@@ -78,25 +98,23 @@ struct InsightSettingsView: View {
                     .cancel(Text(L("No, keep pump as is")))
                 ]
             )
-        }
-        .actionSheet(isPresented: $showRepairConfirm) {
-            ActionSheet(
+        case .repair:
+            return ActionSheet(
                 title: Text(L("Pair the bridge again?")),
                 message: Text(
                     L(
                         "Use this if the connection was refused or you replaced the bridge phone. Your pump settings stay as they are."
                     )
                 ),
-                buttons: [.default(Text(L("Pair bridge again"))) { viewModel.onRepair() }, .cancel()]
+                buttons: [.default(Text(L("Pair bridge again"))) { viewModel.requestRepair() }, .cancel()]
             )
-        }
-        .actionSheet(isPresented: $showDeleteConfirm) {
-            ActionSheet(
+        case .delete:
+            return ActionSheet(
                 title: Text(L("Remove Pump")),
                 message: Text(
                     L("Are you sure you want to stop using the Accu-Chek Insight? The pairing with the bridge is deleted.")
                 ),
-                buttons: [.destructive(Text(L("Delete Pump"))) { viewModel.onDelete() }, .cancel()]
+                buttons: [.destructive(Text(L("Delete Pump"))) { viewModel.requestDelete() }, .cancel()]
             )
         }
     }
@@ -143,7 +161,7 @@ struct InsightSettingsView: View {
                         )
                         .font(Font.footnote.weight(.semibold))
                     }
-                    Button { viewModel.onResolveUncertainty() } label: {
+                    Button { viewModel.requestResolveUncertainty() } label: {
                         Text(L("Resolve uncertain delivery")).font(.title3).frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.bordered)
@@ -164,6 +182,19 @@ struct InsightSettingsView: View {
                     L("Time Change Detected"),
                     L(
                         "The time on your pump is different from the current time. Your pump’s time controls your scheduled basal. Scroll down to the Pump time section to review the difference and configure your pump."
+                    )
+                )
+            }
+
+            if let reason = viewModel.loopBlockedReason {
+                notice(L("Trio cannot dose with the Insight"), reason, color: guidanceColors.critical)
+            }
+
+            if viewModel.profileWasSimplified {
+                notice(
+                    L("Pump basal profile simplified"),
+                    L(
+                        "The Insight only stores basal rates that change on full hours. Each hour uses the lowest rate Trio has scheduled in that hour; temp basals still deliver what Trio asks for."
                     )
                 )
             }
@@ -260,10 +291,11 @@ struct InsightSettingsView: View {
     // MARK: Manage (action cards, like DanaKit)
 
     @ViewBuilder private func actionCard(
-        title: String, systemImage: String, iconColor: Color, disabled: Bool = false, busy: Bool = false,
+        title: String, systemImage: String, iconColor: Color, busy: Bool = false, safety: Bool = false,
         action: @escaping () -> Void
     ) -> some View {
-        let visuallyDisabled = disabled || viewModel.busyAction != nil
+        // Dimmed while another action runs; a tap is never swallowed (the view model explains why it cannot run).
+        let visuallyDisabled = !safety && viewModel.busyAction != nil
         VStack(spacing: 8) {
             if busy {
                 ActivityIndicator(isAnimating: .constant(true), style: .medium).frame(height: 28)
@@ -280,7 +312,7 @@ struct InsightSettingsView: View {
         .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(Color(UIColor.secondarySystemGroupedBackground)))
         .opacity(visuallyDisabled ? 0.4 : 1.0)
         .contentShape(Rectangle())
-        .onTapGesture { if !visuallyDisabled { action() } }
+        .onTapGesture { action() }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text(title))
         .accessibilityAddTraits(.isButton)
@@ -293,15 +325,24 @@ struct InsightSettingsView: View {
                     title: viewModel.isSuspended ? L("Resume Delivery") : L("Suspend Delivery"),
                     systemImage: viewModel.isSuspended ? "play.circle.fill" : "pause.circle.fill",
                     iconColor: viewModel.isSuspended ? Color.accentColor : guidanceColors.warning,
-                    disabled: state.isDeliveryUncertain,
-                    busy: viewModel.busyAction == .suspend || viewModel.busyAction == .resume
+                    busy: viewModel.isBusy(.suspend) || viewModel.busyAction == .resume,
+                    safety: !viewModel.isSuspended
                 ) {
-                    if viewModel.isSuspended { showResumeConfirm = true } else { showSuspendConfirm = true }
+                    let action: InsightSettingsViewModel.Action = viewModel.isSuspended ? .resume : .suspend
+                    // Resuming is blocked by an uncertain command (with an explanation); suspending never is.
+                    if let reason = viewModel.blockedReason(for: action) {
+                        viewModel.showBlocked(
+                            title: viewModel.isSuspended ? L("Resume Delivery") : L("Suspend Delivery"),
+                            reason: reason
+                        )
+                    } else {
+                        confirmation = viewModel.isSuspended ? .resume : .suspend
+                    }
                 }
                 if viewModel.isTempBasal {
                     actionCard(
                         title: L("Stop Temp Basal"), systemImage: "xmark.circle.fill", iconColor: Color.accentColor,
-                        disabled: state.isDeliveryUncertain, busy: viewModel.busyAction == .stopTempBasal
+                        busy: viewModel.isBusy(.stopTempBasal), safety: true
                     ) {
                         viewModel.stopTempBasal()
                     }
@@ -336,11 +377,10 @@ struct InsightSettingsView: View {
     }
 
     private var bridgeColor: Color {
-        switch viewModel.connection {
-        case .ready: return .green
-        case .handshaking,
-             .linkConnecting,
-             .pairing: return .orange
+        switch viewModel.linkStatus {
+        case .connected: return .green
+        case .pairing,
+             .reconnecting: return .orange
         default: return .red
         }
     }
@@ -354,7 +394,6 @@ struct InsightSettingsView: View {
                     if viewModel.busyAction == .refresh { ActivityIndicator(isAnimating: .constant(true), style: .medium) }
                 }
             }
-            .disabled(viewModel.busyAction != nil)
 
             statusRow(L("Bridge"), viewModel.connectionTitle, bridgeColor)
             statusRow(
@@ -362,6 +401,9 @@ struct InsightSettingsView: View {
                 viewModel.pumpLinkTitle,
                 viewModel.pumpLinkIsOK ? .green : (state.pumpLink == .connecting ? .orange : .red)
             )
+            if let hint = viewModel.connectionHint {
+                Text(hint).font(.footnote).foregroundColor(.secondary)
+            }
 
             HStack {
                 Text(L("Last sync")).foregroundColor(Color.primary)
@@ -396,14 +438,13 @@ struct InsightSettingsView: View {
                 Text(viewModel.scheduleStatus)
                     .foregroundColor(state.basalSchedule != nil && !state.basalScheduleSynced ? .insightWarningText : .secondary)
             }
-            Button { showSyncBasalConfirm = true } label: {
+            Button { requestConfirmation(.syncBasal, action: .syncBasal, title: L("Basal profile")) } label: {
                 HStack {
                     Text(L("Sync basal profile"))
                     Spacer()
                     if viewModel.busyAction == .syncBasal { ActivityIndicator(isAnimating: .constant(true), style: .medium) }
                 }
             }
-            .disabled(viewModel.busyAction != nil || state.isDeliveryUncertain)
         } header: {
             Text(L("Configuration"))
         }
@@ -451,14 +492,13 @@ struct InsightSettingsView: View {
                 Spacer()
                 Text(viewModel.checkedAtText).foregroundColor(.secondary)
             }
-            Button { showSyncTimeConfirm = true } label: {
+            Button { requestConfirmation(.syncTime, action: .syncTime, title: L("Pump time")) } label: {
                 HStack {
                     Text(L("Manually sync Pump time")).foregroundColor(.accentColor)
                     Spacer()
                     if viewModel.busyAction == .syncTime { ActivityIndicator(isAnimating: .constant(true), style: .medium) }
                 }
             }
-            .disabled(viewModel.busyAction != nil)
         } header: {
             Text(L("Pump time"))
         }

@@ -128,6 +128,11 @@ public final class InsightPumpManager: DeviceManager, @unchecked Sendable {
     var historyWasComplete = false
     var matchedPendingBolus = false
     var lastStatusReceived: Date?
+    var lastProfileAutoResync: Date?
+    /// Automatic profile writes since the profile was last confirmed (capped, then the user is told).
+    var autoResyncAttempts = 0
+    /// When the session was last seen going down (nil while connected). Written on the manager queue.
+    let connectionLostSinceStore = Locked<Date?>(nil)
     private var timeZoneObserver: NSObjectProtocol?
 
     // MARK: init
@@ -151,7 +156,7 @@ public final class InsightPumpManager: DeviceManager, @unchecked Sendable {
         if let client {
             self.client = client
         } else {
-            let link = BLEBridgeLink(queue: queue)
+            let link = BLEBridgeLink(queue: queue, scheduler: self.scheduler)
             let session = BridgeSession(
                 link: link, store: credentialStore, scheduler: self.scheduler, queue: queue, appName: Self.appName
             )
