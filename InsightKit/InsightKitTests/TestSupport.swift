@@ -46,10 +46,44 @@ final class ManualScheduler: BridgeScheduler {
 
 // MARK: - Fake link + fake bridge (bridge side of the protocol)
 
-final class FakeLink: BridgeLink {
+/// What a FakeBridge needs from the wire it is attached to.
+protocol FakeEndpoint: AnyObject {
+    var onSend: ((Data) -> Void)? { get set }
+    func deliver(_ envelope: Data)
+}
+
+final class FakeLink: BridgeLink, FakeEndpoint {
     weak var delegate: BridgeLinkDelegate?
-    var state: BridgeLinkState = .stopped { didSet { delegate?.linkDidChangeState(self) } }
+    var state: BridgeLinkState = .stopped {
+        didSet {
+            if oldValue != .connected, state == .connected { connectionGeneration += 1 }
+            delegate?.linkDidChangeState(self)
+        }
+    }
+
     var targetPeripheral: UUID?
+    var allowsCandidates = true
+    private(set) var connectionGeneration = 0
+    var lastCandidateSeen: Date?
+    private(set) var authenticatedCount = 0
+    private(set) var rejectedCount = 0
+    var activeIsTarget = true
+    var expectedBridgeId: String?
+    private(set) var abandonedCount = 0
+    private(set) var verdictGenerations = [Int]()
+    func markAuthenticated(connection: Int) {
+        authenticatedCount += 1
+        verdictGenerations.append(connection)
+    }
+
+    func abandonCandidate(connection _: Int) { abandonedCount += 1 }
+    /// Another connection replaced the old one without the state ever leaving `.connected`.
+    func replaceConnection() {
+        connectionGeneration += 1
+        delegate?.linkDidChangeState(self)
+    }
+
+    func rejectCandidate(connection _: Int) { rejectedCount += 1 }
     private(set) var sent = [Data]()
     private(set) var resetCount = 0
     private(set) var startCount = 0
@@ -79,18 +113,26 @@ enum FakeReply {
 
 /// Implements the bridge side of §3/§4 on top of a FakeLink.
 final class FakeBridge {
-    let link: FakeLink
-    let bridgeId = "00112233aabbccdd"
+    let link: FakeEndpoint
+    let bridgeId: String
     let ltk: SymmetricKey
     var handler: (String, BridgeValue) -> FakeReply = { _, _ in .ok(.object([:])) }
     var helloReply: FakeReply = .ok(json(#"{"protocol":2,"bridgeVersion":"test","pumpPaired":true}"#))
     private(set) var requests = [(op: String, args: BridgeValue)]()
     private var codec: EnvelopeCodec?
     var rejectSession = false
+    /// Never answers `sessionStart` (a silent device).
+    var silentHandshake = false
+    /// What the bridge claims to be in `sessionResp` (nil: its real id).
+    var responseBridgeId: String?
     var corruptMac = false
 
-    init(link: FakeLink, ltk: SymmetricKey = SymmetricKey(data: Data((0 ..< 32).map { UInt8($0) }))) {
+    init(
+        link: FakeEndpoint, bridgeId: String = "00112233aabbccdd",
+        ltk: SymmetricKey = SymmetricKey(data: Data((0 ..< 32).map { UInt8($0) }))
+    ) {
         self.link = link
+        self.bridgeId = bridgeId
         self.ltk = ltk
         link.onSend = { [weak self] data in self?.receive(data) }
     }
@@ -119,6 +161,7 @@ final class FakeBridge {
                 break
             }
         } else if let message = HandshakeMessage.decode(envelope), message["t"] as? String == "sessionStart" {
+            if silentHandshake { return }
             if rejectSession {
                 link.deliver((try? HandshakeMessage.encode(["t": "sessionReject", "reason": "unknownClient"])) ?? Data())
                 return
@@ -130,7 +173,7 @@ final class FakeBridge {
             let sk = BridgeKDF.sessionKey(ltk: ltk, nonceI: nonceI, nonceB: nonceB)
             codec = EnvelopeCodec(sessionKey: sk, sendDirection: .bridgeToPhone)
             link.deliver((try? HandshakeMessage.encode([
-                "t": "sessionResp", "v": 2, "bridgeId": bridgeId,
+                "t": "sessionResp", "v": 2, "bridgeId": responseBridgeId ?? bridgeId,
                 "nonce": nonceB.base64EncodedString(), "mac": mac.base64EncodedString()
             ])) ?? Data())
         }
@@ -170,6 +213,7 @@ func date(_ iso: String) -> Date { BridgeDate.parse(iso)! }
 final class FakeBridgeClient: InsightBridgeClient {
     weak var delegate: InsightBridgeClientDelegate?
     var sessionState: BridgeSessionState = .ready
+    var lastBridgeSighting: Date?
     var hello: HelloResult? = HelloResult(protocolVersion: 2, bridgeVersion: "test", pumpPaired: true)
     var repairSuspected = false
     var outcomeResult: BridgeResult<RequestOutcomeResult> = .success(RequestOutcomeResult(state: .unknown))
@@ -218,8 +262,18 @@ final class FakeBridgeClient: InsightBridgeClient {
     func stop() {}
     func ensureStarted() {}
 
+    /// When set, `getStatus` does not answer until `releaseStatus()` (one held answer per call, oldest first).
+    var holdStatus = false
+    private var heldStatus = [() -> Void]()
+    func releaseStatus() { if !heldStatus.isEmpty { heldStatus.removeFirst()() } }
+
     func getStatus(_ completion: @escaping (BridgeResult<BridgeStatus>) -> Void) {
         statusCalls += 1
+        if holdStatus {
+            let answer = statusResult ?? .success(status)
+            heldStatus.append { completion(answer) }
+            return
+        }
         completion(statusResult ?? .success(status))
     }
 
@@ -413,4 +467,14 @@ extension Result {
         if case let .failure(error) = self { return error }
         return nil
     }
+}
+
+/// Polls (pumping the main run loop, which main-actor alert delivery needs) until `condition` holds.
+func eventually(_ timeout: TimeInterval = 3, _ condition: () -> Bool) -> Bool {
+    let end = Date().addingTimeInterval(timeout)
+    while Date() < end {
+        if condition() { return true }
+        RunLoop.main.run(until: Date().addingTimeInterval(0.02))
+    }
+    return condition()
 }

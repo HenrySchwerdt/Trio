@@ -5,6 +5,12 @@ public typealias BridgeResult<T> = Result<T, BridgeError>
 public protocol InsightBridgeClientDelegate: AnyObject {
     func bridgeClientDidChangeState(_ client: InsightBridgeClient)
     func bridgeClient(_ client: InsightBridgeClient, didReceive event: BridgeEvent)
+    /// The paired bridge authenticated under a (possibly new) BLE peripheral identifier: persist it.
+    func bridgeClient(_ client: InsightBridgeClient, didAdoptPeripheral id: UUID)
+}
+
+public extension InsightBridgeClientDelegate {
+    func bridgeClient(_: InsightBridgeClient, didAdoptPeripheral _: UUID) {}
 }
 
 /// Typed operations of §5.1. The manager only talks to this protocol, so tests can substitute a fake.
@@ -40,6 +46,8 @@ public protocol InsightBridgeClient: AnyObject {
     func confirmAlert(alertId: Int, alertType: String, _ completion: @escaping (BridgeResult<EmptyResult>) -> Void)
     func snoozeAlert(alertId: Int, alertType: String, _ completion: @escaping (BridgeResult<EmptyResult>) -> Void)
     func pumpPairingStatus(_ completion: @escaping (BridgeResult<PumpPairingStatusResult>) -> Void)
+    /// When a bridge advertisement was last seen (drives "bridge not found").
+    var lastBridgeSighting: Date? { get }
     /// Asks what happened to an earlier dosing request (never resends it).
     func getRequestOutcome(requestId: String, _ completion: @escaping (BridgeResult<RequestOutcomeResult>) -> Void)
 
@@ -79,6 +87,7 @@ public final class SessionBridgeClient: InsightBridgeClient, BridgeSessionDelega
     public var sessionState: BridgeSessionState { session.state }
     public var hello: HelloResult? { session.hello }
     public var repairSuspected: Bool { session.repairSuspected }
+    public var lastBridgeSighting: Date? { scanner?.lastCandidateSeen }
 
     public func start(bridgeId: String, peripheral: UUID?) { session.start(bridgeId: bridgeId, peripheral: peripheral) }
     public func stop() { session.stop() }
@@ -92,6 +101,10 @@ public final class SessionBridgeClient: InsightBridgeClient, BridgeSessionDelega
 
     public func session(_: BridgeSession, didReceive event: BridgeEvent) {
         delegate?.bridgeClient(self, didReceive: event)
+    }
+
+    public func session(_: BridgeSession, didAdoptPeripheral id: UUID) {
+        delegate?.bridgeClient(self, didAdoptPeripheral: id)
     }
 
     // MARK: ops

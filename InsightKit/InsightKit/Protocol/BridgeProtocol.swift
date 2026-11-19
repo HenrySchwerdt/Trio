@@ -23,6 +23,20 @@ public enum BridgeProtocol {
         return advertisedNamePrefix + "????"
     }
 
+    /// The bridge id suffix from the advertisement's service data (uppercase ASCII), nil if absent.
+    public static func advertisedId(serviceData: [CBUUID: Data]?) -> String? {
+        guard let data = serviceData?[serviceUUID], !data.isEmpty,
+              let id = String(data: data.prefix(8), encoding: .ascii)?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !id.isEmpty else { return nil }
+        return id.uppercased()
+    }
+
+    /// True unless the advertisement names a different bridge than `bridgeId` (no data: cannot tell, so maybe).
+    public static func advertisement(_ advertisedId: String?, couldBe bridgeId: String?) -> Bool {
+        guard let advertisedId, let bridgeId, !bridgeId.isEmpty else { return true }
+        return bridgeId.uppercased().hasSuffix(advertisedId)
+    }
+
     /// Maximum reassembled message size.
     public static let maxMessageSize = 16 * 1024
     /// A partial message is discarded after this long without its LAST fragment.
@@ -35,6 +49,15 @@ public enum BridgeProtocol {
     /// (nothing has been sent at that point, so the failure is certain).
     public static let connectWait: TimeInterval = 20
     public static let pairingResponseTimeout: TimeInterval = 15
+    /// §1a: a candidate must complete the session handshake within this time.
+    public static let handshakeTimeout: TimeInterval = 10
+    /// §1a: how long a candidate that is not the paired bridge stays on the ignore list.
+    public static let ignoreDuration: TimeInterval = 10 * 60
+    /// A device that never completed the handshake (silent) is skipped for this long.
+    public static let silentIgnoreDuration: TimeInterval = 2 * 60
+    /// §1a: liveness ping while a session is up, and how long the answer may take.
+    public static let pingInterval: TimeInterval = 60
+    public static let pingTimeout: TimeInterval = 10
     public static let pairingConfirmTimeout: TimeInterval = 130
     /// Status older than this is stale.
     public static let staleStatusAge: TimeInterval = 15 * 60
@@ -65,6 +88,7 @@ public enum BridgeOp: String, CaseIterable {
     case snoozeAlert
     case getRequestOutcome
     case pumpPairingStatus
+    case ping
 
     /// Ops that change what the pump delivers (or may). A timeout on those is "uncertain".
     public var isDosing: Bool {
@@ -82,7 +106,8 @@ public enum BridgeOp: String, CaseIterable {
     }
 
     public var timeout: TimeInterval {
-        isDosing ? BridgeProtocol.dosingTimeout : BridgeProtocol.statusTimeout
+        if self == .ping { return BridgeProtocol.pingTimeout }
+        return isDosing ? BridgeProtocol.dosingTimeout : BridgeProtocol.statusTimeout
     }
 }
 

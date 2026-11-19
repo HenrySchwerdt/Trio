@@ -330,7 +330,9 @@ struct InsightFinishView: View {
                 Label(viewModel.scheduleSummary, systemImage: "chart.bar.xaxis")
                 Label(L("Apply your maximum bolus and basal limits"), systemImage: "gauge.with.dots.needle.33percent")
                 DescriptiveText(
-                    label: L("The Insight changes basal only on full hours. Schedules with other start times are rejected.")
+                    label: L(
+                        "The Insight changes basal only on full hours. A schedule with other start times is converted: each hour uses the lowest rate scheduled in it, and Trio tells you."
+                    )
                 )
             }
 

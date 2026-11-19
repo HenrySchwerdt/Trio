@@ -102,8 +102,9 @@ extension InsightPumpManager: PumpManager {
 
     public func enactBolus(
         decisionId: UUID?, units: Double, activationType: BolusActivationType,
-        completion: @escaping (PumpManagerError?) -> Void
+        completion rawCompletion: @escaping (PumpManagerError?) -> Void
     ) {
+        let completion = reportingRefusals(rawCompletion)
         queue.async {
             let s = self.state
             if let error = self.dosingPrecondition(s) { completion(error)
@@ -381,8 +382,10 @@ extension InsightPumpManager: PumpManager {
 
     public func enactTempBasal(
         decisionId: UUID?, unitsPerHour: Double, for duration: TimeInterval,
-        completion: @escaping (PumpManagerError?) -> Void
+        completion rawCompletion: @escaping (PumpManagerError?) -> Void
     ) {
+        // A refused cancel is not a "cannot dose" situation; every other outcome is reported (never silent).
+        let completion = duration < 1 ? rawCompletion : reportingRefusals(rawCompletion)
         queue.async {
             let s = self.state
             if duration < 1 {
@@ -392,7 +395,9 @@ extension InsightPumpManager: PumpManager {
                 self.cancelTempBasalCommand(decisionId: decisionId, completion: completion)
                 return
             }
-            if let error = self.dosingPrecondition(s) { completion(error)
+            // Uncertain-delivery and profile gates only apply to temp basals that raise delivery; they are checked
+            // below once the percentage is known. Lowering or stopping insulin is never blocked by them.
+            if !s.isOnboarded { completion(.configuration(InsightPumpManagerError.notOnboarded))
                 return }
             self.transient.mutate { $0.basal = .initiatingTempBasal }
             self.notifyStateDidChange()
@@ -409,32 +414,18 @@ extension InsightPumpManager: PumpManager {
                         if let error = preflight { finish(error)
                             return }
                         let s = self.state
-                        if let error = self.dosingPrecondition(s) { finish(error)
+                        if !s.isOnboarded { finish(.configuration(InsightPumpManagerError.notOnboarded))
                             return }
                         if s.isSuspended { finish(.deviceState(InsightPumpManagerError.pumpSuspended))
                             return }
                         guard let schedule = s.basalSchedule
                         else { finish(.configuration(InsightPumpManagerError.noBasalSchedule))
                             return }
-                        guard s.basalScheduleSynced else { finish(.configuration(InsightPumpManagerError.scheduleNotConfirmed))
-                            return }
 
                         let now = self.clock()
                         let utcOffset = s.pumpTimeZoneOffsetSeconds ?? s.pumpTimeZone.secondsFromGMT(for: now)
                         let pumpZone = TimeZone(secondsFromGMT: utcOffset) ?? s.pumpTimeZone
                         let scheduled = schedule.rate(at: now, in: pumpZone)
-                        // Cross-check the base the percentage applies to with what the pump says. The pump's rate is
-                        // compared with the schedule at the time it was read and now (with the pump clock drift):
-                        // a boundary between the two must not look like a mismatch.
-                        if let error = self.checkBasalRate(
-                            schedule: schedule,
-                            scheduledNow: scheduled,
-                            now: now,
-                            pumpZone: pumpZone
-                        ) {
-                            finish(error)
-                            return
-                        }
                         let maxBasal = [s.maxBasal, s.limits.maxBasal, InsightPumpSpec.maxBasalAbsolute].compactMap { $0 }
                             .min() ?? 25
                         if unitsPerHour > maxBasal + 1E-9 {
@@ -450,6 +441,26 @@ extension InsightPumpManager: PumpManager {
                             finish(.configuration(error as? LocalizedError))
                             return
                         }
+                        // Reduce-only: stopping the temp basal or setting <= 100% never adds insulin.
+                        let reduceOnly: Bool
+                        switch plan {
+                        case .cancel: reduceOnly = true
+                        case let .set(percent, _, _): reduceOnly = percent <= 100
+                        }
+                        if !reduceOnly {
+                            if let error = self.dosingPrecondition(s) { finish(error)
+                                return }
+                            guard s.basalScheduleSynced
+                            else { finish(.configuration(InsightPumpManagerError.scheduleNotConfirmed))
+                                return }
+                            // Cross-check the base the percentage applies to with what the pump says (see `checkBasalRate`).
+                            if let error = self.checkBasalRate(
+                                schedule: schedule, scheduledNow: scheduled, now: now, pumpZone: pumpZone
+                            ) {
+                                finish(error)
+                                return
+                            }
+                        }
                         switch plan {
                         case .cancel:
                             self.transient.mutate { $0.basal = nil }
@@ -462,7 +473,7 @@ extension InsightPumpManager: PumpManager {
                                 completion(nil)
                                 done()
                             } else {
-                                self.sendCancelTBR(safety: false) { error in completion(error)
+                                self.sendCancelTBR(safety: true) { error in completion(error)
                                     done() }
                             }
                         case let .set(percent, minutes, rate):
@@ -473,7 +484,8 @@ extension InsightPumpManager: PumpManager {
                                 scheduled: scheduled,
                                 schedule: schedule,
                                 utcOffset: utcOffset,
-                                decisionId: decisionId
+                                decisionId: decisionId,
+                                reduceOnly: reduceOnly
                             ) { error in
                                 completion(error)
                                 done()
@@ -547,7 +559,7 @@ extension InsightPumpManager: PumpManager {
 
     private func sendSetTBR(
         percent: Int, minutes: Int, expectedRate _: Double, scheduled: Double, schedule: InsightBasalSchedule,
-        utcOffset: Int, decisionId: UUID?,
+        utcOffset: Int, decisionId: UUID?, reduceOnly: Bool = false,
         completion: @escaping (PumpManagerError?) -> Void
     ) {
         let requestId = UUID().uuidString
@@ -557,13 +569,15 @@ extension InsightPumpManager: PumpManager {
             units: nil, percent: percent, durationMinutes: minutes, scheduledRate: scheduled, decisionId: decisionId,
             automatic: true, insulinType: state.insulinTypeRaw.map(String.init), isUncertain: false
         ))
-        guard accepted else {
+        // A reduce-only temp basal may run next to an unresolved command (without a record of its own: the status is
+        // authoritative for the TBR and is re-read afterwards); anything that adds insulin may not.
+        guard accepted || reduceOnly else {
             transient.mutate { $0.basal = nil }
             notifyStateDidChange()
             completion(.deviceState(InsightPumpManagerError.deliveryUncertain))
             return
         }
-        persistNow()
+        if accepted { persistNow() }
         log.info("set TBR \(percent)% for \(minutes) min")
 
         client.setTBR(percent: percent, duration: minutes, requestId: requestId) { result in
@@ -603,7 +617,7 @@ extension InsightPumpManager: PumpManager {
                     completion(nil)
                 case let .failure(error):
                     if error.isUncertainOutcome {
-                        completion(self.uncertainResult(requestId: requestId, error: error, recorded: true))
+                        completion(self.uncertainResult(requestId: requestId, error: error, recorded: accepted))
                     } else {
                         self.clearPending(requestId)
                         self.notifyStateDidChange()
@@ -771,9 +785,9 @@ extension InsightPumpManager: PumpManager {
     ) {
         queue.async {
             let s = self.state
-            let schedule: InsightBasalSchedule
+            let converted: InsightBasalSchedule.Simplified
             do {
-                schedule = try InsightBasalSchedule.validated(
+                converted = try InsightBasalSchedule.simplified(
                     items: scheduleItems,
                     minRate: s.limits.minBasal ?? InsightPumpSpec.minBasal,
                     maxRate: min(s.limits.maxBasal ?? InsightPumpSpec.maxBasalAbsolute, InsightPumpSpec.maxBasalAbsolute)
@@ -782,11 +796,13 @@ extension InsightPumpManager: PumpManager {
                 completion(.failure(PumpManagerError.configuration(error as? LocalizedError)))
                 return
             }
-            self.pushBasalSchedule(schedule) { result in
+            self.pushBasalSchedule(converted.schedule) { result in
                 switch result {
                 case .success:
+                    self.noteProfileConversion(converted)
+                    // What the pump really runs (hourly) is what is reported back.
                     let tz = self.state.pumpTimeZone
-                    if let daily = DailyValueSchedule<Double>(dailyItems: scheduleItems, timeZone: tz) {
+                    if let daily = DailyValueSchedule<Double>(dailyItems: converted.schedule.scheduleItems(), timeZone: tz) {
                         completion(.success(daily))
                     } else {
                         completion(.failure(PumpManagerError.configuration(BasalScheduleError.empty)))
@@ -795,6 +811,25 @@ extension InsightPumpManager: PumpManager {
                     completion(.failure(error))
                 }
             }
+        }
+    }
+
+    /// Tells the user once per distinct requested profile that it had to be simplified for the pump.
+    func noteProfileConversion(_ converted: InsightBasalSchedule.Simplified) {
+        queue.async {
+            guard converted.wasSimplified else {
+                if self.state.simplifiedProfileSource != nil { self.mutate { $0.simplifiedProfileSource = nil } }
+                return
+            }
+            guard self.state.simplifiedProfileSource != converted.sourceSignature else { return }
+            self.mutate { $0.simplifiedProfileSource = converted.sourceSignature }
+            self.log.warning("basal profile converted to hourly rates (minimum of each hour, rounded down)")
+            let alert = InsightAlertCatalog.profileSimplifiedAlert()
+            self.pumpDelegate.notify { delegate in
+                guard let delegate else { return }
+                Task { await delegate.issueAlert(alert) }
+            }
+            self.notifyStateDidChange()
         }
     }
 
@@ -845,6 +880,8 @@ extension InsightPumpManager: PumpManager {
                             st.basalScheduleSynced = true
                             st.bridgeBasalRate = nil // re-read with the next status
                             st.basalMismatchCount = 0
+                            st.profileWriteFailed = nil
+                            self.autoResyncAttempts = 0
                         }
                         self.notifyStateDidChange()
                         self.refreshAll(reason: "basal profile")
@@ -854,6 +891,10 @@ extension InsightPumpManager: PumpManager {
                         // is synced again. A clean rejection leaves the pump as it was.
                         if !(error.isUncertainOutcome || self.isVerifyFailure(error)) {
                             self.mutate { $0.basalScheduleSynced = wasSynced }
+                        } else if !self.isVerifyFailure(error) {
+                            // Unknown result: worth writing again by itself. A failed read-back is not (the pump
+                            // disagrees with the profile; the user decides).
+                            self.mutate { $0.profileWriteFailed = true }
                         }
                         self.notifyStateDidChange()
                         completion(.failure(Self.pumpManagerError(from: error)))
@@ -921,20 +962,27 @@ extension InsightPumpManager: PumpManager {
 
     /// Refreshes the status if it is older than a minute and surfaces failures as certain (nothing was sent).
     /// Dosing is refused when the pump is not connected to the bridge or the pump data is older than 15 minutes.
+    ///
+    /// On-demand bridge mode: the bridge may connect to the pump only per request and then report the link as down
+    /// again. So the "connected" shortcut on a cached status is only used for a status that says connected; anything
+    /// else asks the bridge again, and a status the bridge read *because of that request* counts as proof that the
+    /// pump is reachable (`preflightVerdict`).
     func preflight(_ completion: @escaping (PumpManagerError?) -> Void) {
         if let received = lastStatusReceived, clock().timeIntervalSince(received) < 60, client.sessionState == .ready,
-           let status = lastStatus
+           let status = lastStatus, status.pumpLink == .connected
         {
             completion(preflightVerdict(status))
             return
         }
+        // Newest pump read we knew BEFORE asking: an on-demand status must be strictly newer than that.
+        let previousRead = state.lastPumpReadDate
         client.getStatus { result in
             self.queue.async {
                 switch result {
                 case let .success(status):
                     self.applyStatus(status)
                     self.notifyStateDidChange()
-                    completion(self.preflightVerdict(status))
+                    completion(self.preflightVerdict(status, previousRead: .some(previousRead)))
                 case let .failure(error):
                     completion(Self.pumpManagerError(from: error))
                 }
@@ -942,19 +990,98 @@ extension InsightPumpManager: PumpManager {
         }
     }
 
-    func preflightVerdict(_ status: BridgeStatus) -> PumpManagerError? {
+    /// `previousRead`: `.some(newest pump read known before the status was requested)` for a status that was just asked
+    /// for (nil: a cached status, no on-demand allowance).
+    func preflightVerdict(_ status: BridgeStatus, previousRead: Date?? = nil) -> PumpManagerError? {
         switch status.pumpLink {
         case .notPaired:
             return .configuration(BridgeError.remote(BridgeRemoteError(code: .notPaired, message: "", uncertain: false)))
         case .connected:
             break
         default:
-            return .connection(BridgeError.remote(BridgeRemoteError(code: .pumpUnreachable, message: "", uncertain: false)))
+            guard let previousRead, Self.statusWasReadForRequest(status, previousRead: previousRead, now: clock()) else {
+                return .connection(BridgeError.remote(BridgeRemoteError(code: .pumpUnreachable, message: "", uncertain: false)))
+            }
         }
         if state.isStatusStale(now: clock()) {
             return .connection(InsightPumpManagerError.pumpDataStale)
         }
         return nil
+    }
+
+    /// The bridge read the pump because we asked: the status carries a read time strictly newer than anything known
+    /// before the request (no wall-clock comparison between the two phones).
+    static func statusWasReadForRequest(_ status: BridgeStatus, previousRead: Date?, now: Date) -> Bool {
+        guard let read = status.timestamp, read <= now.addingTimeInterval(BridgeStatus.maxClockSkew) else { return false }
+        guard let previousRead else { return true }
+        return read > previousRead
+    }
+
+    // MARK: refusals are never silent
+
+    /// Wraps the completion of a dosing request: a refusal is recorded and shown to the user, an accepted
+    /// command clears it again.
+    func reportingRefusals(_ completion: @escaping (PumpManagerError?) -> Void) -> (PumpManagerError?) -> Void {
+        { error in
+            self.queue.async { self.noteDosingOutcome(error) }
+            completion(error)
+        }
+    }
+
+    func noteDosingOutcome(_ error: PumpManagerError?) {
+        guard let error else {
+            guard state.loopBlockedReason != nil else { return }
+            mutate { st in
+                st.loopBlockedReason = nil
+                st.loopBlockedAlertAt = nil
+            }
+            let id = Alert.Identifier(
+                managerIdentifier: InsightAlertCatalog.managerIdentifier,
+                alertIdentifier: InsightAlertCatalog.loopBlockedAlertIdentifier
+            )
+            pumpDelegate.notify { delegate in
+                guard let delegate else { return }
+                Task { await delegate.retractAlert(identifier: id) }
+            }
+            notifyStateDidChange()
+            return
+        }
+        guard let reason = Self.refusalText(error) else { return }
+        let now = clock()
+        let repeated = state.loopBlockedReason == reason
+            && (state.loopBlockedAlertAt.map { now.timeIntervalSince($0) < Self.loopBlockedAlertInterval } ?? false)
+        mutate { st in
+            st.loopBlockedReason = reason
+            if !repeated { st.loopBlockedAlertAt = now }
+        }
+        if !repeated {
+            log.warning("dosing refused: \(reason)")
+            let alert = InsightAlertCatalog.loopBlockedAlert(reason: reason)
+            pumpDelegate.notify { delegate in
+                guard let delegate else { return }
+                Task { await delegate.issueAlert(alert) }
+            }
+        }
+        notifyStateDidChange()
+    }
+
+    static let loopBlockedAlertInterval: TimeInterval = 30 * 60
+
+    /// Plain-language reason of a refused dosing request; nil for refusals the user caused knowingly.
+    static func refusalText(_ error: PumpManagerError) -> String? {
+        let underlying: LocalizedError?
+        switch error {
+        case let .communication(e),
+             let .configuration(e),
+             let .connection(e),
+             let .deviceState(e):
+            if let e = e as? InsightPumpManagerError, e == .bolusInProgress || e == .pumpSuspended { return nil }
+            underlying = e
+        case .uncertainDelivery:
+            return InsightPumpManagerError.deliveryUncertain.errorDescriptionText
+        }
+        let text = underlying?.errorDescription ?? underlying?.localizedDescription
+        return text?.isEmpty == false ? text : error.localizedDescription
     }
 
     /// Atomically records an in-flight command. Refuses (returns false) if *any* command is still recorded, so a

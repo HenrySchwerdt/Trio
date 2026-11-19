@@ -71,12 +71,11 @@ final class SessionHandshakeTests: SessionTestCase {
     func testRepeatedUnknownClientRequiresRepairAndStopsLink() {
         bridge.rejectSession = true
         connect()
-        // one unauthenticated reject is only a suspicion: no re-pair, no stop, a later reconnect
+        // one unauthenticated reject is only a suspicion: the candidate is ignored (§1a.3), the search goes on
         XCTAssertNotEqual(session.state, .needsRepair("unknownClient"))
         XCTAssertTrue(session.repairSuspected)
-        XCTAssertEqual(link.resetCount, 0)
-        advance(31)
-        XCTAssertEqual(link.resetCount, 1, "reconnect on a separate connection after a delay")
+        XCTAssertEqual(link.rejectedCount, 1, "the candidate goes on the ignore list")
+        XCTAssertEqual(link.authenticatedCount, 0)
 
         link.state = .connecting
         flush()
@@ -88,11 +87,34 @@ final class SessionHandshakeTests: SessionTestCase {
         XCTAssertEqual(result?.failureValue, .sessionRejected("unknownClient"))
     }
 
-    func testBadSessionMacIsRejected() {
+    func testBadSessionMacIgnoresCandidateAndRepeatedFailureNeedsRepair() {
         bridge.corruptMac = true
         connect()
-        if case .needsRepair = session.state {} else { XCTFail("state \(session.state)") }
+        XCTAssertEqual(session.state, .linkConnecting, "one bad MAC only ignores this candidate")
+        XCTAssertEqual(link.rejectedCount, 1)
         XCTAssertTrue(bridge.requests.isEmpty, "no encrypted traffic on an unverified session")
+        link.state = .connecting
+        flush()
+        link.state = .connected
+        flush()
+        if case .needsRepair = session.state {} else { XCTFail("state \(session.state)") }
+        XCTAssertTrue(bridge.requests.isEmpty)
+    }
+
+    func testWrongBridgeIdIgnoresCandidateWithoutRepair() {
+        bridge.responseBridgeId = "ffeeddccbbaa9988"
+        connect()
+        XCTAssertEqual(session.state, .linkConnecting)
+        XCTAssertEqual(link.rejectedCount, 1)
+        XCTAssertFalse(session.repairSuspected, "a neighbour's bridge says nothing about our pairing")
+        XCTAssertTrue(bridge.requests.isEmpty)
+    }
+
+    func testAuthenticatedHandshakeCommitsTheCandidate() {
+        connect()
+        XCTAssertEqual(session.state, .ready)
+        XCTAssertEqual(link.authenticatedCount, 1)
+        XCTAssertEqual(link.rejectedCount, 0)
     }
 
     func testMissingCredentialsNeedRepair() {

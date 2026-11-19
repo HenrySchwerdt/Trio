@@ -319,6 +319,61 @@ public struct InsightBasalSchedule: Equatable, Codable {
         return InsightBasalSchedule(hourlyRates: rates)!
     }
 
+    /// Result of converting an arbitrary (e.g. 30-minute) profile to the hourly profile the Insight can store.
+    public struct Simplified: Equatable {
+        public let schedule: InsightBasalSchedule
+        /// The pump profile differs from what was asked for (not on full hours, or rates not on the pump's grid).
+        public let wasSimplified: Bool
+        /// Stable description of the requested profile (to tell the user only once per distinct profile).
+        public let sourceSignature: String
+    }
+
+    /// Conservative conversion for profiles that do not change on full hours only: each hour gets the MINIMUM rate
+    /// of everything that is scheduled inside that hour, rounded DOWN to the pump's rate grid. The pump never
+    /// delivers more basal than the original profile asked for; temp basals compensate through the percentage.
+    public static func simplified(
+        items: [RepeatingScheduleValue<Double>],
+        minRate: Double = InsightPumpSpec.minBasal,
+        maxRate: Double = InsightPumpSpec.maxBasalAbsolute
+    ) throws -> Simplified {
+        guard !items.isEmpty else { throw BasalScheduleError.empty }
+        guard items[0].startTime == 0 else { throw BasalScheduleError.doesNotStartAtMidnight }
+        var wasSimplified = false
+        for (index, item) in items.enumerated() {
+            guard item.startTime.isFinite, item.startTime >= 0,
+                  item.startTime < 86400 else { throw BasalScheduleError.notAscending }
+            if index > 0, item.startTime <= items[index - 1].startTime { throw BasalScheduleError.notAscending }
+            let rate = item.value
+            guard rate.isFinite, rate >= minRate - 1E-9,
+                  rate <= maxRate + 1E-9 else { throw BasalScheduleError.rateOutOfRange(rate) }
+            if !InsightPumpSpec.isMultiple(item.startTime, of: 3600, tolerance: 1E-9) { wasSimplified = true }
+            if !InsightPumpSpec.isMultiple(rate, of: InsightPumpSpec.basalStep(forRate: rate)) { wasSimplified = true }
+        }
+        var hourly = [Double](repeating: .infinity, count: 24)
+        for (index, item) in items.enumerated() {
+            let start = item.startTime
+            let end = index + 1 < items.count ? items[index + 1].startTime : 86400
+            for hour in 0 ..< 24 {
+                let hourStart = Double(hour) * 3600
+                if start < hourStart + 3600, end > hourStart { hourly[hour] = min(hourly[hour], item.value) }
+            }
+        }
+        let rounded = hourly.map { floorToPumpGrid($0, minRate: minRate) }
+        let signature = items.map { "\(Int($0.startTime / 60)):\($0.value)" }.joined(separator: ",")
+        return Simplified(
+            schedule: InsightBasalSchedule(hourlyRates: rounded)!,
+            wasSimplified: wasSimplified,
+            sourceSignature: signature
+        )
+    }
+
+    /// Largest rate of the pump grid that is not above `rate` (0.01 U/h steps below 5 U/h, 0.1 above).
+    static func floorToPumpGrid(_ rate: Double, minRate: Double) -> Double {
+        let step = InsightPumpSpec.basalStep(forRate: rate)
+        let steps = (rate / step + 1E-6).rounded(.down)
+        return max((steps * step).rounded(toPlaces: 2), minRate)
+    }
+
     /// Scheduled rate at a wall-clock moment in the given time zone.
     public func rate(at date: Date, in timeZone: TimeZone) -> Double {
         var calendar = Calendar(identifier: .gregorian)
